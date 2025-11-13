@@ -8,8 +8,8 @@ A modern, fast, and interactive web application for exploring our solar system a
 
 ## 👥 Team Members
 - **Sarim Raza** - Lead Developer
-- **Taher Mustansir** - Developer
-- **Baray Bhai** - Developer
+- **Taher Mustansir** - Developer (on vacations)
+- **Baray Bhai** - Developer (probably gambling)
 
 ---
 
