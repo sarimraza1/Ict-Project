@@ -230,6 +230,6 @@ For questions or feedback, contact any team member:
 
 ---
 
-**© 2024 Astropedia | ICT Project 25K - BAI-1C**
+**© 2024 Astropedia | ICT Project BATCH 25K - BAI-1C**
 
 *"Explore the universe, one click at a time"* 🌠
