@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Galaxies — AstronomySphere</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<nav class="navbar">
+<div class="nav-container container">
+<div class="logo">🌌 AstronomySphere</div>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="planets.html">Planets</a></li>
+<li><a href="galaxies.html" class="active">Galaxies</a></li>
+</ul>
+</div>
+</nav>
+
+
+<main class="container page">
+<header class="page-header">
+<h1>Famous Galaxies</h1>
+<p>A curated list of five well-known galaxies with high-resolution NASA imagery.</p>
+</header>
+
+
+<div id="itemsGrid" class="grid">
+  </div>
+</main>
+
+
+<div id="detailModal" class="modal hidden">
+<div class="modal-content">
+<button id="modalClose" class="modal-close">✕</button>
+<h2 id="modalTitle"></h2>
+<img id="modalImage" src="" alt="detail" />
+<p id="modalDesc"></p>
+<a id="modalNasaLink" class="btn" target="_blank">Open at NASA Image & Video Library</a>
+</div>
+</div>
+
+
+<script>
+const galaxiesData = [
+  {
+    name: "Andromeda Galaxy (M31)",
+    desc: "The closest large spiral galaxy to the Milky Way, expected to collide with our own in about 4.5 billion years.",
+    thumb: "https://images-assets.nasa.gov/image/PIA21303/PIA21303~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA21303"
+  },
+  {
+    name: "Triangulum Galaxy (M33)",
+    desc: "A spiral galaxy in the constellation Triangulum, the third largest member of the Local Group.",
+    thumb: "https://images-assets.nasa.gov/image/PIA17300/PIA17300~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA17300"
+  },
+  {
+    name: "Whirlpool Galaxy (M51)",
+    desc: "A classic spiral galaxy interacting with a smaller companion galaxy, a prime example of galactic collision.",
+    thumb: "https://images-assets.nasa.gov/image/PIA03617/PIA03617~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA03617"
+  },
+  {
+    name: "Sombrero Galaxy (M104)",
+    desc: "A spiral galaxy with a bright nucleus and an unusually large central bulge, viewed nearly edge-on from Earth.",
+    thumb: "https://images-assets.nasa.gov/image/PIA07758/PIA07758~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA07758"
+  },
+  {
+    name: "Black Eye Galaxy (M64)",
+    desc: "Famous for the spectacular dark band of absorbing dust in front of the galaxy's bright nucleus.",
+    thumb: "https://images-assets.nasa.gov/image/PIA04271/PIA04271~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA04271"
+  },
+];
+
+const itemsGrid = document.getElementById('itemsGrid');
+const modal = document.getElementById('detailModal');
+const modalClose = document.getElementById('modalClose');
+const modalTitle = document.getElementById('modalTitle');
+const modalImage = document.getElementById('modalImage');
+const modalDesc = document.getElementById('modalDesc');
+const modalNasaLink = document.getElementById('modalNasaLink');
+
+function renderCards(data) {
+  data.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    
+    card.innerHTML = `
+      <div class="card-thumb" style="background-image: url('${item.thumb}')" role="img" aria-label="${item.name}"></div>
+      <div class="card-content">
+        <h3>${item.name}</h3>
+        <p>${item.desc.substring(0, 50)}...</p>
+        <span class="btn-sm">View Details</span>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      modalTitle.textContent = item.name;
+      modalImage.src = item.thumb.replace('~thumb.jpg', '~orig.jpg');
+      modalImage.alt = item.name + ' image';
+      modalDesc.textContent = item.desc;
+      modalNasaLink.href = item.nasaUrl;
+      modal.classList.remove('hidden');
+    });
+
+    itemsGrid.appendChild(card);
+  });
+}
+
+function closeModal() {
+  modal.classList.add('hidden');
+}
+
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    closeModal();
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+    closeModal();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderCards(galaxiesData);
+});
+</script>
+</body>
+</html>
