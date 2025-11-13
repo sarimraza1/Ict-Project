@@ -1,136 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Galaxies — AstronomySphere</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxies - Astropedia</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+  <div class="starfield"></div>
+  <div class="nebula"></div>
 
-<nav class="navbar">
-<div class="nav-container container">
-<div class="logo">🌌 AstronomySphere</div>
-<ul class="nav-links">
-<li><a href="index.html">Home</a></li>
-<li><a href="planets.html">Planets</a></li>
-<li><a href="galaxies.html" class="active">Galaxies</a></li>
-</ul>
-</div>
-</nav>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">🌌 Astropedia</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="planets.html">Planets</a></li>
+        <li><a href="galaxies.html" class="active">Galaxies</a></li>
+      </ul>
+    </div>
+  </nav>
 
+  <!-- Page Content -->
+  <main class="container">
+    <header class="page-header">
+      <h1>Magnificent <span class="gradient-text">Galaxies</span></h1>
+      <p>Journey beyond our solar system</p>
+    </header>
 
-<main class="container page">
-<header class="page-header">
-<h1>Famous Galaxies</h1>
-<p>A curated list of five well-known galaxies with high-resolution NASA imagery.</p>
-</header>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading galaxies...</p>
+    </div>
 
+    <div id="grid" class="grid"></div>
+  </main>
 
-<div id="itemsGrid" class="grid">
-  </div>
-</main>
-
-
-<div id="detailModal" class="modal hidden">
-<div class="modal-content">
-<button id="modalClose" class="modal-close">✕</button>
-<h2 id="modalTitle"></h2>
-<img id="modalImage" src="" alt="detail" />
-<p id="modalDesc"></p>
-<a id="modalNasaLink" class="btn" target="_blank">Open at NASA Image & Video Library</a>
-</div>
-</div>
-
-
-<script>
-const galaxiesData = [
-  {
-    name: "Andromeda Galaxy (M31)",
-    desc: "The closest large spiral galaxy to the Milky Way, expected to collide with our own in about 4.5 billion years.",
-    thumb: "https://images-assets.nasa.gov/image/PIA21303/PIA21303~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA21303"
-  },
-  {
-    name: "Triangulum Galaxy (M33)",
-    desc: "A spiral galaxy in the constellation Triangulum, the third largest member of the Local Group.",
-    thumb: "https://images-assets.nasa.gov/image/PIA17300/PIA17300~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA17300"
-  },
-  {
-    name: "Whirlpool Galaxy (M51)",
-    desc: "A classic spiral galaxy interacting with a smaller companion galaxy, a prime example of galactic collision.",
-    thumb: "https://images-assets.nasa.gov/image/PIA03617/PIA03617~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA03617"
-  },
-  {
-    name: "Sombrero Galaxy (M104)",
-    desc: "A spiral galaxy with a bright nucleus and an unusually large central bulge, viewed nearly edge-on from Earth.",
-    thumb: "https://images-assets.nasa.gov/image/PIA07758/PIA07758~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA07758"
-  },
-  {
-    name: "Black Eye Galaxy (M64)",
-    desc: "Famous for the spectacular dark band of absorbing dust in front of the galaxy's bright nucleus.",
-    thumb: "https://images-assets.nasa.gov/image/PIA04271/PIA04271~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA04271"
-  },
-];
-
-const itemsGrid = document.getElementById('itemsGrid');
-const modal = document.getElementById('detailModal');
-const modalClose = document.getElementById('modalClose');
-const modalTitle = document.getElementById('modalTitle');
-const modalImage = document.getElementById('modalImage');
-const modalDesc = document.getElementById('modalDesc');
-const modalNasaLink = document.getElementById('modalNasaLink');
-
-function renderCards(data) {
-  data.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    
-    card.innerHTML = `
-      <div class="card-thumb" style="background-image: url('${item.thumb}')" role="img" aria-label="${item.name}"></div>
-      <div class="card-content">
-        <h3>${item.name}</h3>
-        <p>${item.desc.substring(0, 50)}...</p>
-        <span class="btn-sm">View Details</span>
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <img id="modalImage" class="modal-image" src="" alt="">
+      <div class="modal-info">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <div id="modalFacts" class="modal-facts"></div>
       </div>
-    `;
+    </div>
+  </div>
 
-    card.addEventListener('click', () => {
-      modalTitle.textContent = item.name;
-      modalImage.src = item.thumb.replace('~thumb.jpg', '~orig.jpg');
-      modalImage.alt = item.name + ' image';
-      modalDesc.textContent = item.desc;
-      modalNasaLink.href = item.nasaUrl;
-      modal.classList.remove('hidden');
+  <footer class="footer">
+    <p>&copy; 2024 Astropedia | ICT Project - BAI-1C</p>
+  </footer>
+
+  <script>
+    // Galaxy data with official NASA Image IDs
+    const galaxies = [
+      {
+        name: 'Milky Way',
+        desc: 'Our home galaxy - a barred spiral containing 200-400 billion stars spanning 100,000 light-years.',
+        imageId: 'GSFC_20171208_Archive_e000393',
+        facts: {
+          'Type': 'Barred Spiral',
+          'Diameter': '100,000 light-years',
+          'Stars': '200-400 billion',
+          'Age': '13.6 billion years'
+        }
+      },
+      {
+        name: 'Andromeda',
+        desc: 'The nearest major galaxy to us and the largest in our Local Group. Will merge with Milky Way in 4.5 billion years.',
+        imageId: 'PIA23128',
+        facts: {
+          'Type': 'Spiral',
+          'Diameter': '220,000 light-years',
+          'Stars': '1 trillion',
+          'Distance': '2.5 million light-years'
+        }
+      },
+      {
+        name: 'Whirlpool',
+        desc: 'A classic spiral galaxy with beautifully defined arms interacting with companion galaxy NGC 5195.',
+        imageId: 'PIA16695',
+        facts: {
+          'Type': 'Spiral',
+          'Diameter': '76,000 light-years',
+          'Stars': '100 billion',
+          'Distance': '23 million light-years'
+        }
+      },
+      {
+        name: 'Sombrero',
+        desc: 'Named for its hat-like appearance with a brilliant bulge and dust lane. Has a massive central black hole.',
+        imageId: 'PIA04675',
+        facts: {
+          'Type': 'Spiral',
+          'Diameter': '50,000 light-years',
+          'Stars': '100 billion',
+          'Distance': '28 million light-years'
+        }
+      },
+      {
+        name: 'Triangulum',
+        desc: 'Third-largest in our Local Group and one of the most distant naked-eye objects with active star formation.',
+        imageId: 'PIA23122',
+        facts: {
+          'Type': 'Spiral',
+          'Diameter': '61,000 light-years',
+          'Stars': '40 billion',
+          'Distance': '3 million light-years'
+        }
+      }
+    ];
+
+    // Get image by NASA ID
+    async function getImage(nasaId) {
+      try {
+        const url = `https://images-api.nasa.gov/asset/${nasaId}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Get the largest/best quality image
+        const items = data.collection.items;
+        const image = items.find(item => item.href.includes('large') || item.href.includes('orig')) || items[0];
+
+        return image.href;
+      } catch (error) {
+        console.error('Error fetching image:', error);
+        return `https://via.placeholder.com/400x300/764ba2/ffffff?text=${nasaId}`;
+      }
+    }
+
+    // Create card
+    async function createCard(galaxy, index) {
+      const img = await getImage(galaxy.imageId);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.animationDelay = `${index * 0.1}s`;
+      card.innerHTML = `
+        <img src="${img}" alt="${galaxy.name}" class="card-img">
+        <div class="card-body">
+          <h3>${galaxy.name}</h3>
+          <p>${galaxy.desc.substring(0, 80)}...</p>
+        </div>
+      `;
+      card.onclick = () => openModal(galaxy, img);
+      return card;
+    }
+
+    // Open modal
+    function openModal(galaxy, img) {
+      document.getElementById('modalTitle').textContent = galaxy.name;
+      document.getElementById('modalImage').src = img;
+      document.getElementById('modalDescription').textContent = galaxy.desc;
+
+      const facts = document.getElementById('modalFacts');
+      facts.innerHTML = '';
+      for (let [key, val] of Object.entries(galaxy.facts)) {
+        facts.innerHTML += `
+          <div class="fact">
+            <span class="fact-label">${key}:</span>
+            <span class="fact-value">${val}</span>
+          </div>
+        `;
+      }
+
+      document.getElementById('modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Load galaxies
+    async function load() {
+      const grid = document.getElementById('grid');
+      for (let i = 0; i < galaxies.length; i++) {
+        const card = await createCard(galaxies[i], i);
+        grid.appendChild(card);
+      }
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', load);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
     });
-
-    itemsGrid.appendChild(card);
-  });
-}
-
-function closeModal() {
-  modal.classList.add('hidden');
-}
-
-modalClose.addEventListener('click', closeModal);
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    closeModal();
-  }
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-    closeModal();
-  }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCards(galaxiesData);
-});
-</script>
+  </script>
 </body>
+
 </html>

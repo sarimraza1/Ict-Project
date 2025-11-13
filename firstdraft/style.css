@@ -1,527 +1,488 @@
-/* ===========================================================
-   ASTRONOMYSPHERE — MYSTICAL COSMIC THEME (STYLE.CSS)
-   Cinematic, dreamy nebula visuals, shimmering star streams,
-   holographic glows, and lush parallax motion.
-   Delivered as a single standalone stylesheet.
-   =========================================================== */
+/* ASTROPEDIA - Optimized Minimal Design */
+:root {
+  --bg: #0a0e1a;
+  --card: #151b2e;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --border: rgba(99, 102, 241, 0.2);
+  --glow: rgba(99, 102, 241, 0.4);
+}
 
-/* ========================
-   THEME VARIABLES
-   ======================== */
-   :root{
-    /* core colors */
-    --bg-1: #03020a;           /* absolute deep space (very dark) */
-    --bg-2: #08122b;           /* indigo mid-space */
-    --nebula-1: rgba(156, 81, 212, 0.16); /* lavender */
-    --nebula-2: rgba(14, 165, 233, 0.12); /* cyan */
-    --nebula-3: rgba(249, 115, 22, 0.06); /* warm ember */
-    --star: #fff8ec;           /* warm star color */
-    --muted: rgba(230,240,255,0.68);
-    --glass: rgba(255,255,255,0.04);
-    --accent-1: #b794f4;       /* soft violet */
-    --accent-2: #7ef0ff;       /* ethereal cyan */
-    --accent-3: #ffb86b;       /* soft amber */
-    --highlight: rgba(126, 213, 255, 0.18);
-  
-    /* spacing & layout */
-    --max-w: 1280px;
-    --pad-sm: 12px;
-    --pad-md: 20px;
-    --pad-lg: 32px;
-    --radius-sm: 10px;
-    --radius-lg: 20px;
-  
-    /* motion */
-    --ease-fast: cubic-bezier(.2,.9,.3,1);
-    --ease-slow: cubic-bezier(.22,.8,.3,1);
-    --time-fast: 220ms;
-    --time-med: 420ms;
-    --time-slow: 1000ms;
-  
-    /* visual density control (increase to add more subtle star layers) */
-    --star-density: 1; /* try values 0.5 .. 2.0 for less/more stars */
-  }
-  
-  /* ========================
-     BASE RESET & TYPOGRAPHY
-     ======================== */
-  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  html,body { height: 100%; }
-  body{
-    margin: 0;
-    font-family: "Inter", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:
-      radial-gradient(1200px 600px at 10% 20%, rgba(14,165,233,0.02), transparent 8%),
-      radial-gradient(900px 400px at 85% 80%, rgba(156,81,212,0.02), transparent 12%),
-      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 70%);
-    color: var(--muted);
-    overflow-x: hidden;
-    line-height: 1.5;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* container utility */
-  .container { max-width: var(--max-w); margin: 0 auto; padding: 2.25rem 1.25rem; }
-  
-  /* headings */
-  h1, h2, h3, h4 {
-    color: #f7fbff;
-    margin: 0 0 0.45rem 0;
-    line-height: 1.05;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-  h1 { font-size: clamp(1.6rem, 2.6vw, 3.2rem); }
-  h2 { font-size: clamp(1.25rem, 1.9vw, 2rem); }
-  p { margin: 0 0 1rem 0; color: rgba(230,240,255,0.75); }
-  
-  /* links/buttons */
-  a { color: var(--accent-2); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  
-  /* ========================
-     STAR LAYERS — heavy, multi-layer starfield
-     (many lines = many stars; tweak --star-density for count)
-     ======================== */
-  
-  /* main starfield: tiny points */
-  #starfield {
-    position: fixed;
-    inset: 0;
-    z-index: -6;
-    pointer-events: none;
-    background-image:
-      radial-gradient(1px 1px at 10% 30%, rgba(255,255,255,0.85), transparent),
-      radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1px 1px at 50% 20%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1px 1px at 70% 50%, rgba(255,255,255,0.5), transparent);
-    background-size: calc(300px / var(--star-density)) calc(300px / var(--star-density)),
-                     calc(420px / var(--star-density)) calc(420px / var(--star-density)),
-                     calc(650px / var(--star-density)) calc(650px / var(--star-density)),
-                     calc(900px / var(--star-density)) calc(900px / var(--star-density));
-    mix-blend-mode: screen;
-    opacity: 0.95;
-    filter: blur(0.1px);
-    transform: translateZ(0);
-  }
-  
-  /* secondary twinkle layer with slow opacity animation */
-  #starfield::after{
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(2px 2px at 20% 35%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1.5px 1.5px at 80% 65%, rgba(255,241,224,0.85), transparent);
-    background-size: calc(500px / var(--star-density)) calc(500px / var(--star-density)),
-                     calc(1000px / var(--star-density)) calc(1000px / var(--star-density));
-    animation: twinkleStar 9s infinite ease-in-out;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Animated Stars */
+.starfield,
+.nebula {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.08), transparent 60%),
+    radial-gradient(1px 1px at 20% 80%, white, transparent),
+    radial-gradient(1px 1px at 80% 20%, white, transparent),
+    radial-gradient(2px 2px at 50% 50%, white, transparent);
+  background-size: 100%, 250px 250px, 300px 300px, 200px 200px;
+  animation: twinkle 20s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
     opacity: 0.7;
   }
-  @keyframes twinkleStar {
-    0% { opacity: 0.6; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-1px); }
-    100% { opacity: 0.7; transform: translateY(0); }
-  }
-  
-  /* shooting star / stream generator (many thin lines, high count) */
-  .stellar-streams {
-    position: fixed;
-    inset: 0;
-    z-index: -5;
-    pointer-events: none;
-    overflow: visible;
-  }
-  .stellar-stream {
-    position: absolute;
-    width: 2px;
-    height: 120vh; /* very long to create diagonal streaks across viewport */
-    top: -10vh;
-    left: 50%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,0.25), rgba(126,213,255,0.06));
-    transform-origin: top left;
-    opacity: 0.0;
-    filter: blur(0.6px);
-    animation: streamMove linear infinite;
-  }
-  
-  /* create many streams via pseudo-elements on container (we will add them dynamically in HTML) */
-  /* But keep a CSS rule to animate generically */
-  @keyframes streamMove {
-    0% { transform: translateX(-40vw) rotate(18deg) translateY(-8vh); opacity: 0; }
-    10% { opacity: 0.45; }
-    50% { transform: translateX(40vw) rotate(18deg) translateY(30vh); opacity: 0.18; }
-    100% { transform: translateX(120vw) rotate(18deg) translateY(60vh); opacity: 0; }
-  }
-  
-  /* ========================
-     NEBULA LAYERS (soft colored volumetric fog)
-     ======================== */
-  .nebula {
-    position: fixed;
-    inset: -20%;
-    z-index: -4;
-    pointer-events: none;
-    background: radial-gradient(800px 420px at 10% 20%, var(--nebula-1), transparent 24%),
-                radial-gradient(700px 380px at 80% 70%, var(--nebula-2), transparent 26%),
-                radial-gradient(500px 300px at 60% 30%, var(--nebula-3), transparent 18%);
-    mix-blend-mode: screen;
-    opacity: 0.8;
-    transform: translateZ(0);
-    animation: nebulaFloat 28s ease-in-out infinite alternate;
-    filter: blur(18px) saturate(1.08);
-  }
-  @keyframes nebulaFloat {
-    from { transform: translateY(-24px) scale(1.0) rotate(-0.25deg); }
-    to   { transform: translateY(24px) scale(1.02) rotate(0.25deg); }
-  }
-  
-  /* additional faint animated clouds for depth */
-  .nebula::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(600px 320px at 15% 80%, rgba(180,120,250,0.03), transparent 18%),
-      radial-gradient(500px 220px at 90% 20%, rgba(120,230,255,0.02), transparent 20%);
-    animation: nebulaSubtle 42s linear infinite;
-    opacity: 0.9;
-  }
-  @keyframes nebulaSubtle {
-    0% { transform: translateX(-10px) translateY(0) rotate(0deg); }
-    100% { transform: translateX(10px) translateY(6px) rotate(0.2deg); }
-  }
-  
-  /* ========================
-     NAVIGATION & HEADER
-     ======================== */
-  .navbar {
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.02);
-    background: linear-gradient(180deg, rgba(4,6,12,0.5), rgba(4,6,12,0.15));
-  }
-  .nav-container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 1.25rem; }
-  .logo { display:flex; align-items:center; gap:0.6rem; font-size:1.1rem; color: var(--star); }
-  .logo .emblem {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: linear-gradient(135deg, rgba(190,128,255,0.16), rgba(126,213,255,0.12));
-    box-shadow: 0 12px 40px rgba(126,213,255,0.06);
-    display:flex; align-items:center; justify-content:center; font-weight:800; color: #fff8ec;
-  }
-  .nav-links { display:flex; align-items:center; gap:0.6rem; list-style:none; margin-left:auto; }
-  .nav-links a {
-    padding: 0.55rem 0.85rem;
-    border-radius: 10px;
-    color: rgba(230,240,255,0.7);
-    font-weight:600;
-    font-size:0.95rem;
-    transition: transform var(--time-fast) var(--ease-fast), box-shadow var(--time-fast);
-  }
-  .nav-links a:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 40px rgba(124,58,237,0.12);
-    color: var(--star);
-  }
-  .nav-links a.active {
-    background: linear-gradient(90deg, rgba(124,58,237,0.14), rgba(14,165,233,0.08));
-    color: var(--star);
-    box-shadow: 0 18px 48px rgba(14,165,233,0.06);
-  }
-  
-  /* ========================
-     HERO / INTRO
-     ======================== */
-  .hero {
-    display:flex;
-    gap: 2.25rem;
-    align-items:center;
-    padding-top: 2.75rem;
-    padding-bottom: 2.75rem;
-  }
-  .hero-left { flex:1; min-width:280px; }
-  .hero-right { width: 480px; max-width: 44vw; display:flex; align-items:center; justify-content:center; }
-  .hero h1 { font-size: clamp(1.8rem, 3.8vw, 3.6rem); margin-bottom:0.4rem; color: transparent; background: linear-gradient(90deg, #fff, #dbefff); -webkit-background-clip:text; background-clip:text; }
-  .hero p { margin-bottom: 1.25rem; color: rgba(230,240,255,0.78); font-size:1.05rem; }
-  .hero-cta { display:flex; gap:0.75rem; }
-  .btn {
-    padding: 0.9rem 1.1rem;
-    border-radius: 12px;
-    text-decoration: none;
-    display:inline-flex;
-    align-items:center;
-    gap:0.6rem;
-    font-weight:700;
-  }
-  .btn-primary {
-    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-    color: #0b1421;
-    box-shadow: 0 28px 80px rgba(124,58,237,0.12);
-    transform-origin: center;
-  }
-  .btn-primary:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 42px 120px rgba(126,213,255,0.14);
-  }
-  .hero-art {
-    width: 420px; max-width: 88%;
-    border-radius: 18px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 40px 140px rgba(6, 16, 28, 0.6);
-    border: 1px solid rgba(255,255,255,0.03);
-  }
-  .hero-art img { width:100%; height:auto; display:block; transform: translateZ(0); animation: floatHero 9s ease-in-out infinite; }
-  @keyframes floatHero { 0% { transform: translateY(0) } 50% { transform: translateY(-12px) } 100% { transform: translateY(0) } }
-  
-  /* subtle overlay lines on hero art */
-  .hero-art::before{
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
-    pointer-events:none;
-  }
-  .hero-art::after{
-    content: "";
-    position:absolute; left:-20%; top:-40%; width:180%; height:180%;
-    background: radial-gradient(600px 300px at 20% 30%, rgba(124,58,237,0.06), transparent 18%),
-                radial-gradient(400px 220px at 80% 80%, rgba(6,182,212,0.04), transparent 20%);
-    mix-blend-mode: screen; opacity: 0.95;
-    pointer-events:none;
-  }
-  
-  /* ========================
-     CARD GRID, DETAILS & SHIMMER
-     ======================== */
-  .grid {
-    margin-top: 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-  .card {
-    padding: 0;
-    overflow: hidden;
-    transition: transform var(--time-med) var(--ease-slow), box-shadow var(--time-med);
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255,255,255,0.03);
-    position: relative;
-  }
-  .card-inner { display:flex; flex-direction:column; height:100%; min-height: 320px; }
-  .card-thumb {
-    position: relative;
-    height: 240px;
-    overflow: hidden;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-  }
-  .card-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 9s cubic-bezier(.2,.9,.3,1), filter 0.8s ease;
-    transform-origin: center;
-  }
-  .card:hover { transform: translateY(-12px); box-shadow: 0 36px 110px rgba(14,165,233,0.10); border-color: rgba(126,213,255,0.14); }
-  .card:hover .card-thumb img { transform: scale(1.12) rotate(-0.2deg); filter: saturate(1.18) contrast(1.05); }
-  
-  /* holographic info area */
-  .card-info {
-    padding: 1rem;
-    display:flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .card-title { font-size: 1.02rem; font-weight: 800; color: #f6fbff; }
-  .card-desc { color: rgba(230,240,255,0.75); font-size: 0.95rem; margin-bottom: 0.5rem; }
-  
-  /* badge (top-left) */
-  .card-badge {
-    position:absolute;
-    left:12px; top:12px;
-    padding: 0.45rem 0.8rem;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(124,58,237,0.16), rgba(14,165,233,0.08));
-    color: var(--star);
-    font-weight:700;
-    font-size:0.85rem;
-    box-shadow: 0 8px 20px rgba(124,58,237,0.06);
-    pointer-events:none;
-  }
-  
-  /* shimmer highlight trail when hovering card */
-  .card::before {
-    content: "";
-    position:absolute;
-    left: -30%;
-    top: -30%;
-    width: 160%;
-    height: 160%;
-    background: radial-gradient(600px 200px at 20% 20%, rgba(255,255,255,0.02), transparent 12%),
-                radial-gradient(400px 140px at 80% 80%, rgba(126,213,255,0.02), transparent 16%);
-    opacity: 0;
-    transition: opacity 420ms var(--ease-fast), transform 800ms var(--ease-slow);
-    pointer-events:none;
-    transform-origin: center;
-    border-radius: inherit;
-  }
-  .card:hover::before { opacity: 1; transform: translateY(-6px) scale(1.02); }
-  
-  /* animated rim glow */
-  .card::after {
-    content: "";
-    position:absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events:none;
-    box-shadow: 0 0 40px rgba(14,165,233,0.04), inset 0 0 60px rgba(124,58,237,0.02);
-    opacity: 0;
-    transition: opacity 420ms var(--ease-fast);
-  }
-  .card:hover::after { opacity: 1; }
-  
-  /* ========================
-     DETAILED MODAL (BIG IMAGE VIEW)
-     ======================== */
-  .modal {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position: fixed;
-    inset:0;
-    z-index: 120;
-    background: linear-gradient(180deg, rgba(2,3,6,0.75), rgba(2,3,6,0.92));
-    padding: 2.5rem;
+
+  50% {
     opacity: 1;
-    transition: opacity 240ms var(--ease-fast);
   }
-  .modal.hidden { display:none; }
-  
-  .modal-panel {
-    width: min(1100px, 96%);
-    border-radius: 14px;
-    background: linear-gradient(180deg, rgba(10,14,22,0.95), rgba(6,10,18,0.98));
-    border: 1px solid rgba(255,255,255,0.03);
-    box-shadow: 0 60px 160px rgba(2,6,23,0.6);
-    overflow: hidden;
-    position: relative;
+}
+
+/* Navbar */
+.navbar {
+  background: rgba(21, 27, 46, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--accent);
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 5rem 0;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p,
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.875rem 2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--glow);
+}
+
+.btn-secondary,
+.btn-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+
+.btn-secondary:hover,
+.btn-outline:hover {
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Features & Cards */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.75rem;
+  padding: 3rem 0;
+}
+
+.feature-card {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Page Header */
+.page-header,
+.section-header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+}
+
+.page-header h1,
+.section-header h2 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-header p,
+.section-header p {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.75rem;
+  padding: 2rem 0 4rem;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.25);
+}
+
+.card img,
+.card-img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.card:hover img,
+.card:hover .card-img {
+  transform: scale(1.08);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-body h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.625rem;
+}
+
+.card-body p {
+  color: var(--muted);
+  font-size: 0.925rem;
+  line-height: 1.5;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  .modal-header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding: 1rem 1.25rem;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  position: relative;
+  background: var(--card);
+  border-radius: 14px;
+  max-width: 850px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2.5rem;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  .modal-title { font-size: 1.15rem; color: #f6fbff; font-weight:800; }
-  .modal-close {
-    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border: none;
-    padding: 0.5rem 0.65rem;
-    border-radius: 8px;
-    color: var(--muted);
-    cursor:pointer;
-    transition: transform var(--time-fast) var(--ease-fast), background var(--time-fast);
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .modal-close:hover { transform: translateY(-3px); color: var(--star); }
-  
-  /* big image area */
-  .modal-figure {
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: rgba(99, 102, 241, 0.15);
+  border: none;
+  color: white;
+  font-size: 1.75rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: var(--accent);
+  transform: rotate(90deg);
+}
+
+.modal img,
+.modal-image {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.modal-body,
+.modal-info {}
+
+.modal-body h2,
+.modal-info h2 {
+  font-size: 1.85rem;
+  margin-bottom: 1rem;
+}
+
+.modal-body p,
+.modal-info p {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.modal-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.fact {
+  background: rgba(99, 102, 241, 0.08);
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.925rem;
+}
+
+.fact-label {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.fact-value {
+  color: var(--text);
+}
+
+/* Footer */
+.footer {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 2.25rem 0;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.footer p {
+  color: var(--muted);
+  font-size: 0.925rem;
+}
+
+/* Gradient Text Helper */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 1.25rem;
+  }
+
+  .nav-links a {
+    font-size: 0.925rem;
+  }
+
+  .hero {
+    padding: 3.5rem 0;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .btn {
     width: 100%;
-    height: 60vh;
-    min-height: 420px;
-    background: #000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
   }
-  .modal-figure img { width:100%; height:100%; object-fit:cover; transform-origin:center; transition: transform 1.2s var(--ease-slow); }
-  .modal-figure .caption {
-    position:absolute;
-    left: 20px; bottom: 20px;
-    color: rgba(255,255,255,0.9);
-    background: linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.08));
-    padding: 0.5rem 0.85rem;
-    border-radius: 8px;
-    font-weight:700;
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  
-  /* ========================
-     ORBITAL / TRAIL ANIMATIONS (decorative)
-     ======================== */
-  .orbit-wrap {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    mix-blend-mode: screen;
+
+  .modal-content {
+    grid-template-columns: 1fr;
+    padding: 1.75rem;
+    gap: 1.5rem;
   }
-  .orbit {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(126,213,255,0.05);
-    box-shadow: 0 8px 40px rgba(14,165,233,0.03);
-    filter: blur(0.4px);
-    animation: orbitRotate linear infinite;
-    opacity: 0.9;
+
+  .modal-image {
+    height: 240px;
   }
-  .orbit.tiny { width: 140px; height: 140px; left: 18%; top: 22%; animation-duration: 36s; transform-origin: center; }
-  .orbit.small { width: 240px; height: 240px; left: 55%; top: 12%; animation-duration: 52s; }
-  .orbit.big { width: 540px; height: 540px; left: -10%; top: -18%; animation-duration: 92s; }
-  @keyframes orbitRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  
-  /* small particle along orbit (animated dot) */
-  .orbit .dot {
-    position: absolute;
-    width: 8px; height: 8px; border-radius:50%;
-    background: radial-gradient(circle at 30% 30%, #fff8ec, rgba(124,58,237,0.9));
-    box-shadow: 0 0 18px rgba(124,58,237,0.28);
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    animation: dotSpin linear infinite;
-  }
-  @keyframes dotSpin { 0%{transform: translateX(-50%) rotate(0deg)} 100%{transform: translateX(-50%) rotate(360deg)} }
-  
-  /* ========================
-     FOOTER
-     ======================== */
-  .footer {
-    padding: 2.25rem 1.25rem;
-    text-align:center;
-    color: rgba(230,240,255,0.58);
-    border-top: 1px solid rgba(255,255,255,0.02);
-    margin-top: 3rem;
-  }
-  
-  /* ========================
-     ACCESSIBILITY + UTILITY
-     ======================== */
-  .visually-hidden { position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; }
-  .center { display:flex; align-items:center; justify-content:center; }
-  
-  /* responsive tweaks */
-  @media (max-width: 1024px) {
-    .hero-right { display:none; } /* reduce visual noise on tablets */
-    .card-thumb { height: 200px; }
-    .modal-figure { height: 48vh; min-height: 320px; }
-  }
-  @media (max-width: 600px) {
-    .container { padding: 1.25rem; }
-    .nav-container { padding: 0 0.75rem; }
-    .hero { padding: 2rem 0; flex-direction: column; gap: 1.1rem; text-align: center; }
-    .btn { padding: 0.7rem 1rem; font-size: 0.95rem; }
-    .grid { gap: 1rem; }
-    .card-thumb { height: 180px; }
-  }
-  
-  /* ========================
-     PERFORMANCE NOTES (keep these)
-     ======================== */
-  /* - Most animations use transform & opacity to remain GPU-friendly.
-     - Nebula & star layers are blurred but sized large to avoid many DOM elements.
-     - Stellar streams are best added as a handful of absolutely positioned
-       elements in HTML with varied animation-delay and duration to simulate many.
-  */
-  
-  /* ========================
-     END OF STYLE.SHEET
-     ======================== */
-  
+}

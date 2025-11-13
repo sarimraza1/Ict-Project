@@ -1,146 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Planets — AstronomySphere</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planets - Astropedia</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+  <div class="starfield"></div>
+  <div class="nebula"></div>
 
-<nav class="navbar">
-<div class="nav-container container">
-<div class="logo">🌌 AstronomySphere</div>
-<ul class="nav-links">
-<li><a href="index.html">Home</a></li>
-<li><a href="planets.html" class="active">Planets</a></li>
-<li><a href="galaxies.html">Galaxies</a></li>
-</ul>
-</div>
-</nav>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">🌌 Astropedia</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="planets.html" class="active">Planets</a></li>
+        <li><a href="galaxies.html">Galaxies</a></li>
+      </ul>
+    </div>
+  </nav>
 
+  <!-- Page Content -->
+  <main class="container">
+    <header class="page-header">
+      <h1>Solar System <span class="gradient-text">Planets</span></h1>
+      <p>Explore all 8 planets orbiting our Sun</p>
+    </header>
 
-<main class="container page">
-<header class="page-header">
-<h1>Planets of the Solar System</h1>
-<p>Click a planet card to open a detail modal with a high-resolution image.</p>
-</header>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading planets...</p>
+    </div>
 
+    <div id="grid" class="grid"></div>
+  </main>
 
-<div id="itemsGrid" class="grid">
-  </div>
-</main>
-
-
-<div id="detailModal" class="modal hidden">
-<div class="modal-content">
-<button id="modalClose" class="modal-close">✕</button>
-<h2 id="modalTitle"></h2>
-<img id="modalImage" src="" alt="detail" />
-<p id="modalDesc"></p>
-<a id="modalNasaLink" class="btn" target="_blank">Open at NASA Image & Video Library</a>
-</div>
-</div>
-
-
-<script>
-const planetsData = [
-  {
-    name: "Mercury",
-    desc: "The smallest and innermost planet in the Solar System, with no moons and a rocky, cratered surface.",
-    thumb: "https://images-assets.nasa.gov/image/PIA19409/PIA19409~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA19409"
-  },
-  {
-    name: "Venus",
-    desc: "The second planet from the Sun, often called Earth's 'sister planet' due to their similar size and mass.",
-    thumb: "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000845/GSFC_20171208_Archive_e000845~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/GSFC_20171208_Archive_e000845"
-  },
-  {
-    name: "Earth",
-    desc: "Our home planet, the only astronomical object known to harbor life.",
-    thumb: "https://images-assets.nasa.gov/image/iss060e034988/iss060e034988~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/iss060e034988"
-  },
-  {
-    name: "Mars",
-    desc: "The 'Red Planet,' a terrestrial planet with a thin atmosphere and a surface reminiscent of valleys, deserts, and polar ice caps.",
-    thumb: "https://images-assets.nasa.gov/image/PIA24546/PIA24546~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA24546"
-  },
-  {
-    name: "Jupiter",
-    desc: "The largest planet in the Solar System, a gas giant with the iconic Great Red Spot, a massive storm bigger than Earth.",
-    thumb: "https://images-assets.nasa.gov/image/PIA22765/PIA22765~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA22765"
-  },
-  {
-    name: "Saturn",
-    desc: "Best known for its prominent system of rings, composed mostly of ice particles, with a small amount of rocky debris.",
-    thumb: "https://images-assets.nasa.gov/image/PIA11667/PIA11667~thumb.jpg",
-    nasaUrl: "https://images.nasa.gov/details/PIA11667"
-  },
-];
-
-
-const itemsGrid = document.getElementById('itemsGrid');
-const modal = document.getElementById('detailModal');
-const modalClose = document.getElementById('modalClose');
-const modalTitle = document.getElementById('modalTitle');
-const modalImage = document.getElementById('modalImage');
-const modalDesc = document.getElementById('modalDesc');
-const modalNasaLink = document.getElementById('modalNasaLink');
-
-function renderCards(data) {
-  data.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    
-    // The inner HTML structure for the card, using the .card-thumb and .card-content classes
-    card.innerHTML = `
-      <div class="card-thumb" style="background-image: url('${item.thumb}')" role="img" aria-label="${item.name}"></div>
-      <div class="card-content">
-        <h3>${item.name}</h3>
-        <p>${item.desc.substring(0, 50)}...</p>
-        <span class="btn-sm">View Details</span>
+  <!-- Modal for Details -->
+  <div id="modal" class="modal">
+    <div class="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <img id="modalImage" class="modal-image" src="" alt="">
+      <div class="modal-info">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <div id="modalFacts" class="modal-facts"></div>
       </div>
-    `;
+    </div>
+  </div>
 
-    // Click event to open modal with the item's details
-    card.addEventListener('click', () => {
-      modalTitle.textContent = item.name;
-      // Replace ~thumb.jpg with ~orig.jpg to attempt loading a higher-res version
-      modalImage.src = item.thumb.replace('~thumb.jpg', '~orig.jpg');
-      modalImage.alt = item.name + ' image';
-      modalDesc.textContent = item.desc;
-      modalNasaLink.href = item.nasaUrl;
-      modal.classList.remove('hidden');
+  <footer class="footer">
+    <p>&copy; 2024 Astropedia | ICT Project - BAI-1C</p>
+  </footer>
+
+  <script>
+    // Planet data with official NASA Image IDs
+    const planets = [
+      {
+        name: 'Mercury',
+        desc: 'The smallest planet and closest to the Sun. Mercury has no atmosphere and a cratered surface similar to our Moon.',
+        imageId: 'PIA15190',
+        facts: {
+          'Distance': '57.9 million km',
+          'Diameter': '4,879 km',
+          'Day': '59 Earth days',
+          'Year': '88 Earth days',
+          'Moons': '0'
+        }
+      },
+      {
+        name: 'Venus',
+        desc: 'Earth\'s twin in size but has a toxic atmosphere and extreme greenhouse effect making it the hottest planet.',
+        imageId: 'PIA00271',
+        facts: {
+          'Distance': '108.2 million km',
+          'Diameter': '12,104 km',
+          'Day': '243 Earth days',
+          'Year': '225 Earth days',
+          'Moons': '0'
+        }
+      },
+      {
+        name: 'Earth',
+        desc: 'Our home planet - the only known world with life, liquid water, and a breathable atmosphere.',
+        imageId: 'PIA00728',
+        facts: {
+          'Distance': '149.6 million km',
+          'Diameter': '12,742 km',
+          'Day': '24 hours',
+          'Year': '365.25 days',
+          'Moons': '1'
+        }
+      },
+      {
+        name: 'Mars',
+        desc: 'The Red Planet with polar ice caps, ancient riverbeds, and the largest volcano in the solar system.',
+        imageId: 'PIA00407',
+        facts: {
+          'Distance': '227.9 million km',
+          'Diameter': '6,779 km',
+          'Day': '24.6 hours',
+          'Year': '687 Earth days',
+          'Moons': '2'
+        }
+      },
+      {
+        name: 'Jupiter',
+        desc: 'The largest planet - a gas giant with the famous Great Red Spot storm and 95+ moons.',
+        imageId: 'PIA00343',
+        facts: {
+          'Distance': '778.5 million km',
+          'Diameter': '139,820 km',
+          'Day': '10 hours',
+          'Year': '12 Earth years',
+          'Moons': '95+'
+        }
+      },
+      {
+        name: 'Saturn',
+        desc: 'Famous for its spectacular ring system and 146+ moons including massive Titan.',
+        imageId: 'PIA01364',
+        facts: {
+          'Distance': '1.4 billion km',
+          'Diameter': '116,460 km',
+          'Day': '10.7 hours',
+          'Year': '29 Earth years',
+          'Moons': '146+'
+        }
+      },
+      {
+        name: 'Uranus',
+        desc: 'An ice giant that rotates on its side and appears blue-green due to methane in its atmosphere.',
+        imageId: 'PIA18182',
+        facts: {
+          'Distance': '2.9 billion km',
+          'Diameter': '50,724 km',
+          'Day': '17 hours',
+          'Year': '84 Earth years',
+          'Moons': '27'
+        }
+      },
+      {
+        name: 'Neptune',
+        desc: 'The windiest planet with supersonic winds and a deep blue color from atmospheric methane.',
+        imageId: 'PIA01492',
+        facts: {
+          'Distance': '4.5 billion km',
+          'Diameter': '49,244 km',
+          'Day': '16 hours',
+          'Year': '165 Earth years',
+          'Moons': '14'
+        }
+      }
+    ];
+
+    // Get image by NASA ID
+    async function getImage(nasaId) {
+      try {
+        const url = `https://images-api.nasa.gov/asset/${nasaId}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Get the largest/best quality image
+        const items = data.collection.items;
+        const image = items.find(item => item.href.includes('large') || item.href.includes('orig')) || items[0];
+
+        return image.href;
+      } catch (error) {
+        console.error('Error fetching image:', error);
+        return `https://via.placeholder.com/400x300/667eea/ffffff?text=${nasaId}`;
+      }
+    }
+
+    // Create card
+    async function createCard(planet, index) {
+      const img = await getImage(planet.imageId);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.animationDelay = `${index * 0.1}s`;
+      card.innerHTML = `
+        <img src="${img}" alt="${planet.name}" class="card-img">
+        <div class="card-body">
+          <h3>${planet.name}</h3>
+          <p>${planet.desc.substring(0, 80)}...</p>
+        </div>
+      `;
+      card.onclick = () => openModal(planet, img);
+      return card;
+    }
+
+    // Open modal
+    function openModal(planet, img) {
+      document.getElementById('modalTitle').textContent = planet.name;
+      document.getElementById('modalImage').src = img;
+      document.getElementById('modalDescription').textContent = planet.desc;
+
+      const facts = document.getElementById('modalFacts');
+      facts.innerHTML = '';
+      for (let [key, val] of Object.entries(planet.facts)) {
+        facts.innerHTML += `
+          <div class="fact">
+            <span class="fact-label">${key}:</span>
+            <span class="fact-value">${val}</span>
+          </div>
+        `;
+      }
+
+      document.getElementById('modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Load planets
+    async function load() {
+      const grid = document.getElementById('grid');
+      for (let i = 0; i < planets.length; i++) {
+        const card = await createCard(planets[i], i);
+        grid.appendChild(card);
+      }
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', load);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
     });
-
-    itemsGrid.appendChild(card);
-  });
-}
-
-function closeModal() {
-  modal.classList.add('hidden');
-}
-
-modalClose.addEventListener('click', closeModal);
-modal.addEventListener('click', (e) => { // Close when clicking outside the modal-content
-  if (e.target === modal) {
-    closeModal();
-  }
-});
-document.addEventListener('keydown', (e) => { // Close on Escape key
-  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-    closeModal();
-  }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCards(planetsData);
-});
-</script>
+  </script>
 </body>
+
 </html>
