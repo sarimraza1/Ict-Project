@@ -1,1 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AstronomySphere — Portal</title>
+
+  <!-- Link to the cinematic style you asked for -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Meta & SEO -->
+  <meta name="description" content="AstronomySphere — Explore planets and galaxies with high-fidelity imagery and immersive cosmic visuals.">
+</head>
+<body>
+  <!-- Background / Visual Layers (style.css expects these IDs/classes) -->
+  <div id="starfield" aria-hidden="true"></div>
+  <div class="nebula" aria-hidden="true"></div>
+  <div class="stellar-streams" id="stellarStreams" aria-hidden="true"></div>
+
+  <!-- Decorative orbits (purely visual) -->
+  <div class="orbit-wrap" aria-hidden="true">
+    <div class="orbit big"><div class="dot"></div></div>
+    <div class="orbit small"><div class="dot"></div></div>
+    <div class="orbit tiny"><div class="dot"></div></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="navbar" role="banner">
+    <div class="nav-container container">
+      <div class="logo" aria-label="AstronomySphere">
+        <div class="emblem" aria-hidden="true">☆</div>
+        <div>
+          <div style="font-weight:800">AstronomySphere</div>
+          <div style="font-size:0.8rem;color:rgba(230,240,255,0.55);margin-top:2px">Mystical Cosmic Portal</div>
+        </div>
+      </div>
+
+      <nav role="navigation" aria-label="Main navigation">
+        <ul class="nav-links" role="menubar">
+          <li role="none"><a role="menuitem" class="active" href="index.html">Home</a></li>
+          <li role="none"><a role="menuitem" href="planets.html">Planets</a></li>
+          <li role="none"><a role="menuitem" href="galaxies.html">Galaxies</a></li>
+          <li role="none"><a role="menuitem" href="#credits">Credits</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / CINEMATIC PORTAL -->
+  <main class="container" role="main">
+    <section class="hero" aria-label="Intro">
+      <div class="hero-left">
+        <h1>Step through the cosmic veil</h1>
+        <p>
+          AstronomySphere is a portal to the Solar System and beyond — immersive, dreamy visuals paired
+          with curated high-resolution imagery. Glide across nebulae, follow shimmering star streams,
+          and open detailed galleries for planets and galaxies.
+        </p>
+
+        <div class="hero-cta" role="group" aria-label="Primary actions">
+          <a class="btn btn-primary" href="planets.html" title="Explore Planets">Explore Planets</a>
+          <a class="btn btn-ghost" href="galaxies.html" title="Explore Galaxies">Explore Galaxies</a>
+        </div>
+
+        <div style="margin-top:1.25rem;color:rgba(230,240,255,0.6);font-size:0.95rem" id="credits">
+          Images & data: NASA • Built with care for cinematic visuals.
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <figure class="hero-art" role="img" aria-label="Nebula portal">
+          <!-- Example hero image — replace or keep. Using a NASA thumbnail for inspiration. -->
+          <img src="https://images-assets.nasa.gov/image/PIA23499/PIA23499~thumb.jpg" alt="Nebula portal visual" width="840" height="560" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- Feature highlights (short, elegant) -->
+    <section class="features" aria-label="Highlights" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem">
+      <article class="card" style="min-height:120px;display:flex;flex-direction:column;justify-content:center;padding:1rem">
+        <div class="card-badge">PLANETS</div>
+        <div style="margin-left:0.2rem">
+          <h3 class="card-title">Explore the 8 Planets</h3>
+          <p class="card-desc">Detailed high-resolution imagery & quick facts. Tap to dive deeper.</p>
+        </div>
+      </article>
+
+      <article class="card" style="min-height:120px;display:flex;flex-direction:column;justify-content:center;padding:1rem">
+        <div class="card-badge">GALAXIES</div>
+        <div style="margin-left:0.2rem">
+          <h3 class="card-title">Famous Galaxies</h3>
+          <p class="card-desc">Andromeda, Milky Way, Whirlpool and more — curated visuals from NASA’s archive.</p>
+        </div>
+      </article>
+
+      <article class="card" style="min-height:120px;display:flex;flex-direction:column;justify-content:center;padding:1rem">
+        <div class="card-badge">IMMERSIVE</div>
+        <div style="margin-left:0.2rem">
+          <h3 class="card-title">Cinematic UI</h3>
+          <p class="card-desc">Nebula layers, star streams, and dynamic glows for an atmospheric experience.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div style="margin-bottom:0.6rem">© <strong>AstronomySphere</strong> — Curated cosmic imagery</div>
+      <div style="font-size:0.9rem;color:rgba(230,240,255,0.5)">Powered by NASA Image and Video Library — respect terms of use</div>
+    </div>
+  </footer>
+
+  <!-- Small inline script to create many stellar-stream elements for the cinematic effect.
+       We'll keep this tiny and performant — script.js (later) will handle API & pages. -->
+  <script>
+    (function createStreams() {
+      const container = document.getElementById('stellarStreams');
+      if (!container) return;
+
+      // Parameters — tweak count for density (higher = more lines)
+      const COUNT = 10 * (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--star-density')) || 1);
+
+      for (let i = 0; i < COUNT; i++) {
+        const el = document.createElement('div');
+        el.className = 'stellar-stream';
+        // randomize left so streams are distributed across the viewport
+        const left = Math.random() * 100;
+        el.style.left = left + 'vw';
+        // randomize height & rotation for variety
+        const height = 60 + Math.random() * 100; // vh-ish length
+        el.style.height = height + 'vh';
+        el.style.width = (1 + Math.random() * 2) + 'px';
+        const delay = Math.random() * -18; // negative delay so they are staggered on load
+        const duration = 18 + Math.random() * 24;
+        el.style.animationDuration = duration + 's';
+        el.style.animationDelay = delay + 's';
+        el.style.opacity = 0.12 + Math.random() * 0.35;
+        el.style.transform = `rotate(${10 + Math.random() * 30}deg)`;
+        container.appendChild(el);
+      }
+
+      // subtle cleanup: after some time reduce DOM count on low-power devices
+      setTimeout(() => {
+        if (window.devicePixelRatio <= 1 && COUNT > 18) {
+          // remove half to save perf
+          const streams = container.querySelectorAll('.stellar-stream');
+          for (let i = 0; i < streams.length / 2; i++) streams[i].remove();
+        }
+      }, 6000);
+    })();
+  </script>
+
+  <!-- Hook for main script (you asked to deliver files one by one). This file keeps visuals local.
+       script.js will contain the NASA fetch logic and page-specific code. -->
+  <script src="script.js" defer></script>
+</body>
+</html>
 
