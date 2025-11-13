@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Planets — AstronomySphere</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<nav class="navbar">
+<div class="nav-container container">
+<div class="logo">🌌 AstronomySphere</div>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="planets.html" class="active">Planets</a></li>
+<li><a href="galaxies.html">Galaxies</a></li>
+</ul>
+</div>
+</nav>
+
+
+<main class="container page">
+<header class="page-header">
+<h1>Planets of the Solar System</h1>
+<p>Click a planet card to open a detail modal with a high-resolution image.</p>
+</header>
+
+
+<div id="itemsGrid" class="grid">
+  </div>
+</main>
+
+
+<div id="detailModal" class="modal hidden">
+<div class="modal-content">
+<button id="modalClose" class="modal-close">✕</button>
+<h2 id="modalTitle"></h2>
+<img id="modalImage" src="" alt="detail" />
+<p id="modalDesc"></p>
+<a id="modalNasaLink" class="btn" target="_blank">Open at NASA Image & Video Library</a>
+</div>
+</div>
+
+
+<script>
+const planetsData = [
+  {
+    name: "Mercury",
+    desc: "The smallest and innermost planet in the Solar System, with no moons and a rocky, cratered surface.",
+    thumb: "https://images-assets.nasa.gov/image/PIA19409/PIA19409~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA19409"
+  },
+  {
+    name: "Venus",
+    desc: "The second planet from the Sun, often called Earth's 'sister planet' due to their similar size and mass.",
+    thumb: "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000845/GSFC_20171208_Archive_e000845~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/GSFC_20171208_Archive_e000845"
+  },
+  {
+    name: "Earth",
+    desc: "Our home planet, the only astronomical object known to harbor life.",
+    thumb: "https://images-assets.nasa.gov/image/iss060e034988/iss060e034988~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/iss060e034988"
+  },
+  {
+    name: "Mars",
+    desc: "The 'Red Planet,' a terrestrial planet with a thin atmosphere and a surface reminiscent of valleys, deserts, and polar ice caps.",
+    thumb: "https://images-assets.nasa.gov/image/PIA24546/PIA24546~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA24546"
+  },
+  {
+    name: "Jupiter",
+    desc: "The largest planet in the Solar System, a gas giant with the iconic Great Red Spot, a massive storm bigger than Earth.",
+    thumb: "https://images-assets.nasa.gov/image/PIA22765/PIA22765~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA22765"
+  },
+  {
+    name: "Saturn",
+    desc: "Best known for its prominent system of rings, composed mostly of ice particles, with a small amount of rocky debris.",
+    thumb: "https://images-assets.nasa.gov/image/PIA11667/PIA11667~thumb.jpg",
+    nasaUrl: "https://images.nasa.gov/details/PIA11667"
+  },
+];
+
+
+const itemsGrid = document.getElementById('itemsGrid');
+const modal = document.getElementById('detailModal');
+const modalClose = document.getElementById('modalClose');
+const modalTitle = document.getElementById('modalTitle');
+const modalImage = document.getElementById('modalImage');
+const modalDesc = document.getElementById('modalDesc');
+const modalNasaLink = document.getElementById('modalNasaLink');
+
+function renderCards(data) {
+  data.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    
+    // The inner HTML structure for the card, using the .card-thumb and .card-content classes
+    card.innerHTML = `
+      <div class="card-thumb" style="background-image: url('${item.thumb}')" role="img" aria-label="${item.name}"></div>
+      <div class="card-content">
+        <h3>${item.name}</h3>
+        <p>${item.desc.substring(0, 50)}...</p>
+        <span class="btn-sm">View Details</span>
+      </div>
+    `;
+
+    // Click event to open modal with the item's details
+    card.addEventListener('click', () => {
+      modalTitle.textContent = item.name;
+      // Replace ~thumb.jpg with ~orig.jpg to attempt loading a higher-res version
+      modalImage.src = item.thumb.replace('~thumb.jpg', '~orig.jpg');
+      modalImage.alt = item.name + ' image';
+      modalDesc.textContent = item.desc;
+      modalNasaLink.href = item.nasaUrl;
+      modal.classList.remove('hidden');
+    });
+
+    itemsGrid.appendChild(card);
+  });
+}
+
+function closeModal() {
+  modal.classList.add('hidden');
+}
+
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { // Close when clicking outside the modal-content
+  if (e.target === modal) {
+    closeModal();
+  }
+});
+document.addEventListener('keydown', (e) => { // Close on Escape key
+  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+    closeModal();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderCards(planetsData);
+});
+</script>
+</body>
+</html>
