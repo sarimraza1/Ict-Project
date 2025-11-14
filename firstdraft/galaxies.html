@@ -58,12 +58,12 @@
   </footer>
 
   <script>
-    // Galaxy data with official NASA Image IDs
+    // Galaxy data with local images
     const galaxies = [
       {
-        name: 'Milky Way',
+        name: '🌌 Milky Way',
         desc: 'Our home galaxy - a barred spiral containing 200-400 billion stars spanning 100,000 light-years.',
-        imageId: 'GSFC_20171208_Archive_e000393',
+        image: 'images/milkyway.png',
         facts: {
           'Type': 'Barred Spiral',
           'Diameter': '100,000 light-years',
@@ -72,9 +72,9 @@
         }
       },
       {
-        name: 'Andromeda',
+        name: '🌀 Andromeda',
         desc: 'The nearest major galaxy to us and the largest in our Local Group. Will merge with Milky Way in 4.5 billion years.',
-        imageId: 'PIA23128',
+        image: 'images/andromeda.png',
         facts: {
           'Type': 'Spiral',
           'Diameter': '220,000 light-years',
@@ -83,9 +83,9 @@
         }
       },
       {
-        name: 'Whirlpool',
+        name: '🌊 Whirlpool',
         desc: 'A classic spiral galaxy with beautifully defined arms interacting with companion galaxy NGC 5195.',
-        imageId: 'PIA16695',
+        image: 'images/whirlpool.png',
         facts: {
           'Type': 'Spiral',
           'Diameter': '76,000 light-years',
@@ -94,9 +94,9 @@
         }
       },
       {
-        name: 'Sombrero',
+        name: '🎩 Sombrero',
         desc: 'Named for its hat-like appearance with a brilliant bulge and dust lane. Has a massive central black hole.',
-        imageId: 'PIA04675',
+        image: 'images/sombrero.png',
         facts: {
           'Type': 'Spiral',
           'Diameter': '50,000 light-years',
@@ -105,9 +105,9 @@
         }
       },
       {
-        name: 'Triangulum',
+        name: '🔺 Triangulum',
         desc: 'Third-largest in our Local Group and one of the most distant naked-eye objects with active star formation.',
-        imageId: 'PIA23122',
+        image: 'images/trainglum.png',
         facts: {
           'Type': 'Spiral',
           'Diameter': '61,000 light-years',
@@ -117,45 +117,26 @@
       }
     ];
 
-    // Get image by NASA ID
-    async function getImage(nasaId) {
-      try {
-        const url = `https://images-api.nasa.gov/asset/${nasaId}`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        // Get the largest/best quality image
-        const items = data.collection.items;
-        const image = items.find(item => item.href.includes('large') || item.href.includes('orig')) || items[0];
-
-        return image.href;
-      } catch (error) {
-        console.error('Error fetching image:', error);
-        return `https://via.placeholder.com/400x300/764ba2/ffffff?text=${nasaId}`;
-      }
-    }
-
     // Create card
-    async function createCard(galaxy, index) {
-      const img = await getImage(galaxy.imageId);
+    function createCard(galaxy, index) {
       const card = document.createElement('div');
       card.className = 'card';
       card.style.animationDelay = `${index * 0.1}s`;
       card.innerHTML = `
-        <img src="${img}" alt="${galaxy.name}" class="card-img">
+        <img src="${galaxy.image}" alt="${galaxy.name}" class="card-img">
         <div class="card-body">
           <h3>${galaxy.name}</h3>
           <p>${galaxy.desc.substring(0, 80)}...</p>
         </div>
       `;
-      card.onclick = () => openModal(galaxy, img);
+      card.onclick = () => openModal(galaxy);
       return card;
     }
 
     // Open modal
-    function openModal(galaxy, img) {
+    function openModal(galaxy) {
       document.getElementById('modalTitle').textContent = galaxy.name;
-      document.getElementById('modalImage').src = img;
+      document.getElementById('modalImage').src = galaxy.image;
       document.getElementById('modalDescription').textContent = galaxy.desc;
 
       const facts = document.getElementById('modalFacts');
@@ -180,12 +161,12 @@
     }
 
     // Load galaxies
-    async function load() {
+    function load() {
       const grid = document.getElementById('grid');
-      for (let i = 0; i < galaxies.length; i++) {
-        const card = await createCard(galaxies[i], i);
+      galaxies.forEach((galaxy, index) => {
+        const card = createCard(galaxy, index);
         grid.appendChild(card);
-      }
+      });
       document.getElementById('loading').style.display = 'none';
     }
 
