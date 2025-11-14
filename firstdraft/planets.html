@@ -1,233 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planets - Astropedia</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planets - Astropedia</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+  <body>
+    <div class="starfield"></div>
+    <div class="nebula"></div>
 
-<body>
-  <div class="starfield"></div>
-  <div class="nebula"></div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="logo">🌌 Astropedia</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="planets.html" class="active">Planets</a></li>
+          <li><a href="galaxies.html">Galaxies</a></li>
+        </ul>
+      </div>
+    </nav>
 
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="container">
-      <a href="index.html" class="logo">🌌 Astropedia</a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="planets.html" class="active">Planets</a></li>
-        <li><a href="galaxies.html">Galaxies</a></li>
-      </ul>
-    </div>
-  </nav>
+    <!-- Page Content -->
+    <main class="container">
+      <header class="page-header">
+        <h1>Solar System <span class="gradient-text">Planets</span></h1>
+        <p>Explore all 8 planets orbiting our Sun</p>
+      </header>
 
-  <!-- Page Content -->
-  <main class="container">
-    <header class="page-header">
-      <h1>Solar System <span class="gradient-text">Planets</span></h1>
-      <p>Explore all 8 planets orbiting our Sun</p>
-    </header>
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading planets...</p>
+      </div>
 
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      <p>Loading planets...</p>
-    </div>
+      <div id="grid" class="grid"></div>
+    </main>
 
-    <div id="grid" class="grid"></div>
-  </main>
-
-  <!-- Modal for Details -->
-  <div id="modal" class="modal">
-    <div class="modal-overlay" onclick="closeModal()"></div>
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <img id="modalImage" class="modal-image" src="" alt="">
-      <div class="modal-info">
-        <h2 id="modalTitle"></h2>
-        <p id="modalDescription"></p>
-        <div id="modalFacts" class="modal-facts"></div>
+    <!-- Modal for Details -->
+    <div id="modal" class="modal">
+      <div class="modal-overlay" onclick="closeModal()"></div>
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <img id="modalImage" class="modal-image" src="" alt="" />
+        <div class="modal-info">
+          <h2 id="modalTitle"></h2>
+          <p id="modalDescription"></p>
+          <div id="modalFacts" class="modal-facts"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <footer class="footer">
-    <p>&copy; 2024 Astropedia | ICT Project - BAI-1C</p>
-  </footer>
+    <footer class="footer">
+      <p>&copy; 2024 Astropedia | ICT Project - BAI-1C</p>
+    </footer>
 
-  <script>
-    // Celestial bodies data with local images
-    const planets = [
-      {
-        name: '☿ Mercury',
-        desc: 'The smallest planet and closest to the Sun. Mercury has no atmosphere and a cratered surface similar to our Moon.',
-        image: 'images/mercury.png',
-        facts: {
-          'Distance': '57.9 million km',
-          'Diameter': '4,879 km',
-          'Day': '59 Earth days',
-          'Year': '88 Earth days',
-          'Moons': '0'
-        }
-      },
-      {
-        name: '♀ Venus',
-        desc: 'Earth\'s twin in size but has a toxic atmosphere and extreme greenhouse effect making it the hottest planet.',
-        image: 'images/venus.png',
-        facts: {
-          'Distance': '108.2 million km',
-          'Diameter': '12,104 km',
-          'Day': '243 Earth days',
-          'Year': '225 Earth days',
-          'Moons': '0'
-        }
-      },
-      {
-        name: '🌍 Earth',
-        desc: 'Our home planet - the only known world with life, liquid water, and a breathable atmosphere.',
-        image: 'images/earth.png',
-        facts: {
-          'Distance': '149.6 million km',
-          'Diameter': '12,742 km',
-          'Day': '24 hours',
-          'Year': '365.25 days',
-          'Moons': '1'
-        }
-      },
-      {
-        name: '♂ Mars',
-        desc: 'The Red Planet with polar ice caps, ancient riverbeds, and the largest volcano in the solar system.',
-        image: 'images/mars.png',
-        facts: {
-          'Distance': '227.9 million km',
-          'Diameter': '6,779 km',
-          'Day': '24.6 hours',
-          'Year': '687 Earth days',
-          'Moons': '2'
-        }
-      },
-      {
-        name: '♃ Jupiter',
-        desc: 'The largest planet - a gas giant with the famous Great Red Spot storm and 95+ moons.',
-        image: 'images/jupiter.png',
-        facts: {
-          'Distance': '778.5 million km',
-          'Diameter': '139,820 km',
-          'Day': '10 hours',
-          'Year': '12 Earth years',
-          'Moons': '95+'
-        }
-      },
-      {
-        name: '♄ Saturn',
-        desc: 'Famous for its spectacular ring system and 146+ moons including massive Titan.',
-        image: 'images/saturn.png',
-        facts: {
-          'Distance': '1.4 billion km',
-          'Diameter': '116,460 km',
-          'Day': '10.7 hours',
-          'Year': '29 Earth years',
-          'Moons': '146+'
-        }
-      },
-      {
-        name: '♅ Uranus',
-        desc: 'An ice giant that rotates on its side and appears blue-green due to methane in its atmosphere.',
-        image: 'images/uranus.png',
-        facts: {
-          'Distance': '2.9 billion km',
-          'Diameter': '50,724 km',
-          'Day': '17 hours',
-          'Year': '84 Earth years',
-          'Moons': '27'
-        }
-      },
-      {
-        name: '♆ Neptune',
-        desc: 'The windiest planet with supersonic winds and a deep blue color from atmospheric methane.',
-        image: 'images/neptune.png',
-        facts: {
-          'Distance': '4.5 billion km',
-          'Diameter': '49,244 km',
-          'Day': '16 hours',
-          'Year': '165 Earth years',
-          'Moons': '14'
-        }
-      },
-      {
-        name: '☉ Sun',
-        desc: 'The star at the center of our solar system. A massive sphere of hot plasma that provides light and heat to all planets.',
-        image: 'images/sun.png',
-        facts: {
-          'Distance': '0 km (Center)',
-          'Diameter': '1,392,700 km',
-          'Temperature': '5,500°C (surface)',
-          'Age': '4.6 billion years',
-          'Type': 'G-type Main Sequence'
-        }
-      }
-    ];
+    <script>
+      // Celestial bodies data with local images
+      const planets = [
+        {
+          name: "Mercury",
+          desc: "The smallest planet and closest to the Sun. Mercury has no atmosphere and a cratered surface similar to our Moon.",
+          image: "images/mercury.png",
+          facts: {
+            Distance: "57.9 million km",
+            Diameter: "4,879 km",
+            Day: "59 Earth days",
+            Year: "88 Earth days",
+            Moons: "0",
+          },
+        },
+        {
+          name: "Venus",
+          desc: "Earth's twin in size but has a toxic atmosphere and extreme greenhouse effect making it the hottest planet.",
+          image: "images/venus.png",
+          facts: {
+            Distance: "108.2 million km",
+            Diameter: "12,104 km",
+            Day: "243 Earth days",
+            Year: "225 Earth days",
+            Moons: "0",
+          },
+        },
+        {
+          name: "Earth",
+          desc: "Our home planet - the only known world with life, liquid water, and a breathable atmosphere.",
+          image: "images/earth.png",
+          facts: {
+            Distance: "149.6 million km",
+            Diameter: "12,742 km",
+            Day: "24 hours",
+            Year: "365.25 days",
+            Moons: "1",
+          },
+        },
+        {
+          name: "Mars",
+          desc: "The Red Planet with polar ice caps, ancient riverbeds, and the largest volcano in the solar system.",
+          image: "images/mars.png",
+          facts: {
+            Distance: "227.9 million km",
+            Diameter: "6,779 km",
+            Day: "24.6 hours",
+            Year: "687 Earth days",
+            Moons: "2",
+          },
+        },
+        {
+          name: "Jupiter",
+          desc: "The largest planet - a gas giant with the famous Great Red Spot storm and 95+ moons.",
+          image: "images/jupiter.png",
+          facts: {
+            Distance: "778.5 million km",
+            Diameter: "139,820 km",
+            Day: "10 hours",
+            Year: "12 Earth years",
+            Moons: "95+",
+          },
+        },
+        {
+          name: "Saturn",
+          desc: "Famous for its spectacular ring system and 146+ moons including massive Titan.",
+          image: "images/saturn.png",
+          facts: {
+            Distance: "1.4 billion km",
+            Diameter: "116,460 km",
+            Day: "10.7 hours",
+            Year: "29 Earth years",
+            Moons: "146+",
+          },
+        },
+        {
+          name: "Uranus",
+          desc: "An ice giant that rotates on its side and appears blue-green due to methane in its atmosphere.",
+          image: "images/uranus.png",
+          facts: {
+            Distance: "2.9 billion km",
+            Diameter: "50,724 km",
+            Day: "17 hours",
+            Year: "84 Earth years",
+            Moons: "27",
+          },
+        },
+        {
+          name: "Neptune",
+          desc: "The windiest planet with supersonic winds and a deep blue color from atmospheric methane.",
+          image: "images/neptune.png",
+          facts: {
+            Distance: "4.5 billion km",
+            Diameter: "49,244 km",
+            Day: "16 hours",
+            Year: "165 Earth years",
+            Moons: "14",
+          },
+        },
+        {
+          name: "Sun",
+          desc: "The star at the center of our solar system. A massive sphere of hot plasma that provides light and heat to all planets.",
+          image: "images/sun.png",
+          facts: {
+            Distance: "0 km (Center)",
+            Diameter: "1,392,700 km",
+            Temperature: "5,500°C (surface)",
+            Age: "4.6 billion years",
+            Type: "G-type Main Sequence",
+          },
+        },
+      ];
 
-    // Create card
-    function createCard(planet, index) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.animationDelay = `${index * 0.1}s`;
-      card.innerHTML = `
+      // Create card
+      function createCard(planet, index) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.innerHTML = `
         <img src="${planet.image}" alt="${planet.name}" class="card-img">
         <div class="card-body">
           <h3>${planet.name}</h3>
           <p>${planet.desc.substring(0, 80)}...</p>
         </div>
       `;
-      card.onclick = () => openModal(planet);
-      return card;
-    }
+        card.onclick = () => openModal(planet);
+        return card;
+      }
 
-    // Open modal
-    function openModal(planet) {
-      document.getElementById('modalTitle').textContent = planet.name;
-      document.getElementById('modalImage').src = planet.image;
-      document.getElementById('modalDescription').textContent = planet.desc;
+      // Open modal
+      function openModal(planet) {
+        document.getElementById("modalTitle").textContent = planet.name;
+        document.getElementById("modalImage").src = planet.image;
+        document.getElementById("modalDescription").textContent = planet.desc;
 
-      const facts = document.getElementById('modalFacts');
-      facts.innerHTML = '';
-      for (let [key, val] of Object.entries(planet.facts)) {
-        facts.innerHTML += `
+        const facts = document.getElementById("modalFacts");
+        facts.innerHTML = "";
+        for (let [key, val] of Object.entries(planet.facts)) {
+          facts.innerHTML += `
           <div class="fact">
             <span class="fact-label">${key}:</span>
             <span class="fact-value">${val}</span>
           </div>
         `;
+        }
+
+        document.getElementById("modal").classList.add("active");
+        document.body.style.overflow = "hidden";
       }
 
-      document.getElementById('modal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
+      // Close modal
+      function closeModal() {
+        document.getElementById("modal").classList.remove("active");
+        document.body.style.overflow = "";
+      }
 
-    // Close modal
-    function closeModal() {
-      document.getElementById('modal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
+      // Load planets
+      function load() {
+        const grid = document.getElementById("grid");
+        planets.forEach((planet, index) => {
+          const card = createCard(planet, index);
+          grid.appendChild(card);
+        });
+        document.getElementById("loading").style.display = "none";
+      }
 
-    // Load planets
-    function load() {
-      const grid = document.getElementById('grid');
-      planets.forEach((planet, index) => {
-        const card = createCard(planet, index);
-        grid.appendChild(card);
+      document.addEventListener("DOMContentLoaded", load);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
       });
-      document.getElementById('loading').style.display = 'none';
-    }
-
-    document.addEventListener('DOMContentLoaded', load);
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
