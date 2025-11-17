@@ -41,5 +41,11 @@
             "src": "/",
             "dest": "/static/index.html"
         }
+    ],
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/static/$1"
+        }
     ]
 }
