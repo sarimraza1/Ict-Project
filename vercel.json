@@ -4,40 +4,44 @@
         {
             "src": "server.js",
             "use": "@vercel/node"
-        },
-        {
-            "src": "static/**",
-            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
-            "src": "/api/contact",
+            "src": "/api/(.*)",
             "dest": "server.js"
         },
         {
-            "src": "/",
-            "dest": "static/index.html"
-        },
-        {
-            "src": "/planets",
-            "dest": "static/planets.html"
-        },
-        {
-            "src": "/galaxies",
-            "dest": "static/galaxies.html"
-        },
-        {
-            "src": "/contact",
-            "dest": "static/contact.html"
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
         },
         {
             "src": "/images/(.*)",
-            "dest": "static/images/$1"
+            "dest": "/static/images/$1"
         },
         {
-            "src": "/(.*)",
-            "dest": "static/$1"
+            "src": "/(.*\\.css)",
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/(.*\\.js)",
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/planets.html",
+            "dest": "/static/planets.html"
+        },
+        {
+            "src": "/galaxies.html",
+            "dest": "/static/galaxies.html"
+        },
+        {
+            "src": "/contact.html",
+            "dest": "/static/contact.html"
+        },
+        {
+            "src": "/",
+            "dest": "/static/index.html"
         }
     ]
 }

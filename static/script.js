@@ -25,11 +25,13 @@ function showError(message) {
     errorDiv.textContent = message;
 
     const form = document.getElementById('contactForm');
-    form.insertBefore(errorDiv, form.firstChild);
+    if (form) {
+        form.insertBefore(errorDiv, form.firstChild);
 
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 5000);
+    }
 }
 
 // Contact Form Handler
@@ -42,41 +44,40 @@ document.addEventListener('DOMContentLoaded', function () {
         contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Get form values
             const email = document.getElementById('email').value.trim();
             const suggestion = document.getElementById('suggestion').value.trim();
 
-            // Validate email
+            // Client-side validation
             if (!email) {
                 showError('Please enter your email address');
                 return;
             }
 
             if (!isValidEmail(email)) {
-                showError('Please enter a valid email address (e.g., name@example.com)');
+                showError('Please enter a valid email address');
                 return;
             }
 
-            // Validate suggestion
             if (!suggestion) {
                 showError('Please enter your suggestion');
                 return;
             }
 
             if (suggestion.length < 10) {
-                showError('Please provide a more detailed suggestion (at least 10 characters)');
+                showError('Suggestion must be at least 10 characters long');
                 return;
             }
 
-            // Disable submit button and show loading state
-            const originalButtonText = submitButton.textContent;
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            submitButton.style.opacity = '0.6';
+            // Disable button and show loading
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+            }
 
             try {
-                // Send data to backend API
-                const response = await fetch('http://localhost:3000/api/contact', {
+                console.log('Sending request to /api/contact');
+
+                const response = await fetch('/api/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -84,48 +85,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify({ email, suggestion })
                 });
 
+                console.log('Response status:', response.status);
+
                 const data = await response.json();
+                console.log('Response data:', data);
 
-                if (data.success) {
-                    // Hide form and show success message
-                    contactForm.style.display = 'none';
-                    successMessage.style.display = 'block';
-
-                    // Reset form after a delay
-                    setTimeout(() => {
-                        contactForm.reset();
-                        submitButton.disabled = false;
-                        submitButton.textContent = originalButtonText;
-                        submitButton.style.opacity = '1';
-                    }, 3000);
+                if (response.ok && data.success) {
+                    contactForm.reset();
+                    if (successMessage) {
+                        successMessage.style.display = 'block';
+                        setTimeout(() => {
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    }
                 } else {
-                    showError(data.message || 'An error occurred. Please try again.');
-                    submitButton.disabled = false;
-                    submitButton.textContent = originalButtonText;
-                    submitButton.style.opacity = '1';
+                    showError(data.message || 'Failed to send suggestion. Please try again.');
                 }
             } catch (error) {
-                console.error('Error submitting form:', error);
+                console.error('Fetch error:', error);
                 showError('Unable to connect to the server. Please make sure the server is running and try again.');
-                submitButton.disabled = false;
-                submitButton.textContent = originalButtonText;
-                submitButton.style.opacity = '1';
+            } finally {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Send Suggestion';
+                }
             }
-        });
-
-        // Real-time email validation
-        const emailInput = document.getElementById('email');
-        emailInput.addEventListener('blur', function () {
-            const email = this.value.trim();
-            if (email && !isValidEmail(email)) {
-                this.style.borderColor = '#dc3545';
-            } else {
-                this.style.borderColor = '';
-            }
-        });
-
-        emailInput.addEventListener('input', function () {
-            this.style.borderColor = '';
         });
     }
 });
