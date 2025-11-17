@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 // Send data to backend API
-                const response = await fetch('http://localhost:3000/api/contact', {
+                const response = await fetch('/submit-feedback', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

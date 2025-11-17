@@ -1,11 +1,12 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const team = process.env.EMAIL_TEAM;
 
 // Middleware
 app.use(cors());
@@ -18,23 +19,15 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Configure nodemailer transporter
-const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use other services like 'outlook', 'yahoo', etc.
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+// Configure Resend API client
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Test email configuration on startup
-transporter.verify((error, success) => {
-    if (error) {
-        console.log('Email configuration error:', error);
-    } else {
-        console.log('Server is ready to send emails');
-    }
-});
+// Test Resend configuration on startup
+if (!process.env.RESEND_API_KEY) {
+    console.warn('⚠️  RESEND_API_KEY is not set. Email functionality will not work.');
+} else {
+    console.log('✅ Resend API configured successfully');
+}
 
 // GET routes for serving HTML pages
 app.get('/', (req, res) => {
@@ -58,7 +51,7 @@ app.get('/contact', (req, res) => {
 });
 
 // API endpoint to handle contact form submission
-app.post('/api/contact', async (req, res) => {
+app.post('/submit-feedback', async (req, res) => {
     const { email, suggestion } = req.body;
 
     // Validate email
@@ -78,10 +71,10 @@ app.post('/api/contact', async (req, res) => {
     }
 
     try {
-        // Email content
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
+        // Send email using Resend API
+        const { data, error } = await resend.emails.send({
+            from: `Astropedia <onboarding@resend.dev>`, // Use Resend's test domain or your verified domain
+            to: [email],
             subject: 'Welcome to Astropedia - Thank You for Your Feedback! 🌌',
             html: `
                 <!DOCTYPE html>
@@ -156,6 +149,7 @@ app.post('/api/contact', async (req, res) => {
                         
                         <p>Best regards,<br>
                         <strong>The Astropedia Team</strong><br>
+                        ${team}<br>
                         ICT Project - BAI-1C</p>
                     </div>
                     <div class="footer">
@@ -165,10 +159,17 @@ app.post('/api/contact', async (req, res) => {
                 </body>
                 </html>
             `
-        };
+        });
 
-        // Send email
-        await transporter.sendMail(mailOptions);
+        if (error) {
+            console.error('Resend API error:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'There was an error sending the email. Please try again later.'
+            });
+        }
+
+        console.log('Email sent successfully:', data);
 
         // Send success response
         res.json({
