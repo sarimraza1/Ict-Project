@@ -38,23 +38,23 @@ transporter.verify((error, success) => {
 
 // GET routes for serving HTML pages
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'firstdraft', 'index.html'));
+    res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
 
 app.get('/index', (req, res) => {
-    res.sendFile(path.join(__dirname, 'firstdraft', 'index.html'));
+    res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
 
 app.get('/planets', (req, res) => {
-    res.sendFile(path.join(__dirname, 'firstdraft', 'planets.html'));
+    res.sendFile(path.join(__dirname, 'static', 'planets.html'));
 });
 
 app.get('/galaxies', (req, res) => {
-    res.sendFile(path.join(__dirname, 'firstdraft', 'galaxies.html'));
+    res.sendFile(path.join(__dirname, 'static', 'galaxies.html'));
 });
 
 app.get('/contact', (req, res) => {
-    res.sendFile(path.join(__dirname, 'firstdraft', 'contact.html'));
+    res.sendFile(path.join(__dirname, 'static', 'contact.html'));
 });
 
 // API endpoint to handle contact form submission
@@ -80,7 +80,7 @@ app.post('/api/contact', async (req, res) => {
     try {
         // Email content
         const mailOptions = {
-            from: `"Astropedia Team" <${process.env.EMAIL_TEAM}>`,
+            from: process.env.EMAIL_USER,
             to: email,
             subject: 'Welcome to Astropedia - Thank You for Your Feedback! 🌌',
             html: `
