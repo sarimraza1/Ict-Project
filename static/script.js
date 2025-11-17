@@ -68,16 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Disable button and show loading
-            if (submitButton) {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Sending...';
-            }
+            // Disable submit button and show loading state
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            submitButton.style.opacity = '0.6';
 
             try {
-                console.log('Sending request to /api/contact');
-
-                const response = await fetch('/api/contact', {
+                // Send data to backend API
+                const response = await fetch('http://localhost:3000/api/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -85,30 +84,32 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify({ email, suggestion })
                 });
 
-                console.log('Response status:', response.status);
-
                 const data = await response.json();
-                console.log('Response data:', data);
 
-                if (response.ok && data.success) {
-                    contactForm.reset();
-                    if (successMessage) {
-                        successMessage.style.display = 'block';
-                        setTimeout(() => {
-                            successMessage.style.display = 'none';
-                        }, 5000);
-                    }
+                if (data.success) {
+                    // Hide form and show success message
+                    contactForm.style.display = 'none';
+                    successMessage.style.display = 'block';
+
+                    // Reset form after a delay
+                    setTimeout(() => {
+                        contactForm.reset();
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalButtonText;
+                        submitButton.style.opacity = '1';
+                    }, 3000);
                 } else {
-                    showError(data.message || 'Failed to send suggestion. Please try again.');
+                    showError(data.message || 'An error occurred. Please try again.');
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                    submitButton.style.opacity = '1';
                 }
             } catch (error) {
-                console.error('Fetch error:', error);
+                console.error('Error submitting form:', error);
                 showError('Unable to connect to the server. Please make sure the server is running and try again.');
-            } finally {
-                if (submitButton) {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Send Suggestion';
-                }
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+                submitButton.style.opacity = '1';
             }
         });
     }
