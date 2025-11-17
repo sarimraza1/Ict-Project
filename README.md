@@ -1,5 +1,7 @@
 # 🌌 Astropedia - Explore the Universe
 
+> Deployed URL: `https://ict-project-25-ye8i3.sevalla.app/`
+
 **ICT Project 25K | Section: BAI-1C**
 
 A modern, interactive web application for exploring our solar system and beyond with local image assets and a contact form powered by Node.js backend.
