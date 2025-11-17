@@ -2,7 +2,7 @@
 
 **ICT Project 25K | Section: BAI-1C**
 
-A modern, fast, and interactive web application for exploring our solar system and beyond using real NASA imagery.
+A modern, interactive web application for exploring our solar system and beyond with local image assets and a contact form powered by Node.js backend.
 
 ---
 
@@ -15,17 +15,18 @@ A modern, fast, and interactive web application for exploring our solar system a
 
 ## 📋 Project Overview
 
-Astropedia is a clean, responsive web application that provides an immersive experience exploring planets and galaxies. Built with vanilla JavaScript and powered by NASA's public API, it offers high-quality space imagery without requiring any authentication or API keys.
+Astropedia is a clean, responsive web application that provides an immersive experience exploring planets and galaxies. Built with vanilla JavaScript and featuring a Node.js/Express backend for contact form functionality with email notifications.
 
 ### ✨ Key Features
 
-- 🪐 **8 Planets** - Complete information on all solar system planets with official NASA images
+- 🪐 **9 Celestial Bodies** - All 8 planets + the Sun with detailed information and local images
 - 🌌 **5 Galaxies** - Explore Milky Way, Andromeda, Whirlpool, Sombrero, and Triangulum
-- 🚀 **NASA API Integration** - Uses official NASA Image IDs for consistent, high-quality images
+- 📧 **Contact Form** - Backend-powered contact form with email notifications via Nodemailer
 - 📱 **Fully Responsive** - Optimized for desktop, tablet, and mobile devices
-- ⚡ **Fast & Lightweight** - Under 300 lines of CSS, no dependencies
-- 🎨 **Modern Design** - Animated starfield backgrounds and smooth transitions
+- ⚡ **Fast & Lightweight** - Clean CSS, minimal dependencies
+- 🎨 **Modern Design** - Animated starfield backgrounds, shooting stars, asteroids, and smooth transitions
 - ♿ **Accessible** - Keyboard navigation support (ESC to close modals)
+- 🖼️ **Local Images** - All space images stored locally for fast, reliable loading
 
 ---
 
@@ -33,14 +34,15 @@ Astropedia is a clean, responsive web application that provides an immersive exp
 
 ### Frontend
 - **HTML5** - Semantic markup
-- **CSS3** - Modern features (Grid, Flexbox, CSS Variables, Animations)
-- **Vanilla JavaScript (ES6+)** - Async/await, Fetch API, DOM manipulation
+- **CSS3** - Modern features (Grid, Flexbox, CSS Variables, Keyframe Animations)
+- **Vanilla JavaScript (ES6+)** - DOM manipulation, form validation, Fetch API
 
-### API
-- **NASA Images and Video Library API**
-  - Endpoint: `https://images-api.nasa.gov/`
-  - **No API key required** - Public access
-  - Using specific NASA Image IDs for consistency
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web server framework
+- **Nodemailer** - Email sending functionality
+- **CORS** - Cross-origin resource sharing middleware
+- **dotenv** - Environment variable management
 
 ---
 
@@ -48,12 +50,33 @@ Astropedia is a clean, responsive web application that provides an immersive exp
 
 ```
 Ict-Project/
-├── firstdraft/
-│   ├── index.html       # Landing page with hero section
-│   ├── planets.html     # 8 planets with NASA images & facts
-│   ├── galaxies.html    # 5 galaxies with NASA images & facts
-│   └── style.css        # Complete styles (294 lines)
-└── README.md            # Project documentation
+├── static/
+│   ├── index.html       # Landing page with hero section and animated effects
+│   ├── planets.html     # 9 celestial bodies (8 planets + Sun) with facts
+│   ├── galaxies.html    # 5 galaxies with detailed information
+│   ├── contact.html     # Contact form page
+│   ├── style.css        # Complete styles with animations
+│   ├── script.js        # Contact form validation & API submission
+│   └── images/          # All space images (14 PNG files)
+│       ├── mercury.png
+│       ├── venus.png
+│       ├── earth.png
+│       ├── mars.png
+│       ├── jupiter.png
+│       ├── saturn.png
+│       ├── uranus.png
+│       ├── neptune.png
+│       ├── sun.png
+│       ├── milkyway.png
+│       ├── andromeda.png
+│       ├── whirlpool.png
+│       ├── sombrero.png
+│       └── trainglum.png
+├── server.js            # Express server with API endpoints and email handling
+├── package.json         # Dependencies and scripts
+├── .env                 # Environment variables (not tracked in git)
+├── .gitignore          # Git ignore rules
+└── README.md           # This file
 ```
 
 ---
@@ -61,175 +84,330 @@ Ict-Project/
 ## 🚀 Setup & Installation
 
 ### Prerequisites
-- Any modern web browser (Chrome, Firefox, Safari, Edge)
-- No server or build tools required!
+- **Node.js** (v14 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js)
+- A Gmail account (for email notifications) or other SMTP service
 
 ### Installation Steps
 
-1. **Download the project**
+1. **Clone or download the project**
    ```bash
    git clone <repository-url>
-   cd Ict-Project/firstdraft
+   cd Ict-Project
    ```
 
-2. **Open in browser**
-   - Double-click `index.html`, or
-   - Right-click `index.html` → Open with → Browser
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-3. **That's it!** No npm install, no dependencies, no configuration needed.
+3. **Configure environment variables**
+   
+   Create a `.env` file in the project root:
+   ```env
+   EMAIL_USER=your-email@gmail.com
+   EMAIL_PASS=your-app-password
+   PORT=3000
+   ```
+
+   **Important for Gmail users:**
+   - You need to use an **App Password**, not your regular Gmail password
+   - Enable 2-Factor Authentication on your Gmail account
+   - Generate an App Password: [Google Account > Security > App Passwords](https://myaccount.google.com/apppasswords)
+   - Use the 16-character app password in the `.env` file
+
+4. **Start the server**
+   ```bash
+   npm start
+   ```
+   
+   Or for development with auto-restart:
+   ```bash
+   npm run dev
+   ```
+
+5. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
 
 ---
 
 ## 🎯 How It Works
 
-### NASA API Integration
+### Frontend Pages
 
-Instead of searching NASA's library (which returns random results), we use **specific NASA Image IDs** to fetch exact, consistent images:
+#### 1. Home Page (`index.html`)
+- Hero section with gradient text
+- Animated shooting stars and asteroids
+- Feature cards highlighting key sections
+- Navigation to Planets and Galaxies pages
 
-```javascript
-// OLD METHOD (Random results - NOT USED)
-const url = `https://images-api.nasa.gov/search?q=Mars&media_type=image`;
+#### 2. Astro Gang (`planets.html`)
+- Displays 9 celestial bodies in a grid layout
+- Each card shows planet name, image, and brief description
+- Click any card to open modal with detailed facts:
+  - Age
+  - Diameter
+  - Year length
+  - Number of moons (for planets)
+  - Temperature (for Sun)
 
-// NEW METHOD (Specific IDs - CURRENT APPROACH)
-const nasaId = 'PIA00407'; // Official Mars image ID
-const url = `https://images-api.nasa.gov/asset/${nasaId}`;
-const response = await fetch(url);
-const data = await response.json();
-const image = data.collection.items[0].href; // Always same high-quality image
+**Planets included:** Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, Sun
+
+#### 3. Galaxies (`galaxies.html`)
+- Displays 5 galaxies in a grid layout
+- Each card shows galaxy name, image, and description
+- Click to view detailed facts:
+  - Galaxy type
+  - Diameter
+  - Number of stars
+  - Distance from Earth / Age
+
+**Galaxies included:** Milky Way, Andromeda, Whirlpool, Sombrero, Triangulum
+
+#### 4. Contact Page (`contact.html`)
+- Email validation (proper format check)
+- Suggestion text area (minimum 10 characters)
+- Real-time validation feedback
+- Success message on submission
+- Error handling for network issues
+
+### Backend API
+
+#### Server Endpoints
+
+**Static File Serving:**
+- All files in `static/` folder are served automatically
+- CSS, JS, images, and HTML files accessible via HTTP
+
+**API Endpoint:**
+```
+POST /api/contact
 ```
 
-### Image IDs Used
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "suggestion": "Your feedback here..."
+}
+```
 
-**Planets:**
-- Mercury: `PIA15190` - MESSENGER spacecraft
-- Venus: `PIA00271` - Magellan radar map
-- Earth: `PIA00728` - Blue Marble
-- Mars: `PIA00407` - Viking orbiter composite
-- Jupiter: `PIA00343` - Voyager portrait
-- Saturn: `PIA01364` - Voyager with rings
-- Uranus: `PIA18182` - Voyager 2
-- Neptune: `PIA01492` - Voyager 2
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Email sent successfully!"
+}
+```
 
-**Galaxies:**
-- Milky Way: `GSFC_20171208_Archive_e000393`
-- Andromeda: `PIA23128` - Hubble composite
-- Whirlpool: `PIA16695` - Hubble Space Telescope
-- Sombrero: `PIA04675` - Hubble/Spitzer
-- Triangulum: `PIA23122` - Hubble wide-field
+**Features:**
+- Email validation (regex-based)
+- Input sanitization
+- Email notification to site owner
+- Confirmation email to user
+- Error handling for SMTP issues
 
 ---
 
-## 🎨 Features Breakdown
+## 🎨 Design Features
 
-### 1. Animated Backgrounds
-- **Twinkling starfield** - CSS animations for realistic star twinkling
-- **Nebula effect** - Radial gradients with blur for depth
+### CSS Animations
 
-### 2. Interactive Cards
-- **Hover effects** - Smooth scale and shadow transitions
-- **Click to expand** - Opens modal with full details
-- **Lazy loading** - Images load on demand
+1. **Starfield Background**
+   - Twinkling stars using CSS animations
+   - Multiple star layers for depth effect
 
-### 3. Modal System
-- **Full information** - Complete description and facts
-- **High-res images** - 360px height in modal view
-- **Keyboard support** - Press ESC to close
-- **Click outside** - Close modal by clicking overlay
-- **Smooth animations** - Slide-up effect on open
+2. **Shooting Stars**
+   - Three animated shooting stars
+   - Different trajectories and timing
+   - Smooth fade-in/fade-out effects
 
-### 4. Responsive Design
-- **Mobile-first** - Optimized for small screens
-- **Breakpoint: 768px** - Adjusts layout for tablets/mobile
-- **Touch-friendly** - Large click targets for mobile users
+3. **Asteroids**
+   - Floating asteroids with rotation
+   - Random positioning and animation delays
+
+4. **Card Hover Effects**
+   - Scale transformation
+   - Box-shadow glow
+   - Smooth transitions
+
+5. **Modal Animations**
+   - Slide-up entrance effect
+   - Fade-in overlay
+   - Keyboard accessible (ESC to close)
+
+### Responsive Design
+
+**Breakpoint: 768px**
+- Single column layout on mobile
+- Adjusted font sizes
+- Touch-friendly buttons
+- Optimized image sizes
+- Simplified navigation
 
 ---
 
 ## 📊 Performance Metrics
 
-- **CSS Size:** 294 lines (compact and efficient)
-- **Total Page Weight:** ~50KB (excluding NASA images)
-- **Load Time:** <1 second (on average connection)
-- **No Dependencies:** Zero external libraries
-- **Browser Support:** All modern browsers (Chrome 90+, Firefox 88+, Safari 14+)
+- **Total Dependencies:** 4 (Express, Nodemailer, CORS, dotenv)
+- **Dev Dependencies:** 1 (Nodemon)
+- **Static Assets:** 14 images + CSS + JS
+- **No external API calls** - All data is local
+- **Fast load time** - Static files served by Express
+- **Browser Support:** All modern browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+
+---
+
+## 📧 Email Configuration
+
+### Gmail Setup (Recommended)
+
+1. Enable 2-Factor Authentication
+2. Generate App Password
+3. Add to `.env` file:
+   ```env
+   EMAIL_USER=youremail@gmail.com
+   EMAIL_PASS=your-16-char-app-password
+   ```
+
+### Alternative SMTP Services
+
+You can use other email services by modifying `server.js`:
+
+**Outlook/Hotmail:**
+```javascript
+const transporter = nodemailer.createTransport({
+    service: 'outlook',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+```
+
+**Custom SMTP:**
+```javascript
+const transporter = nodemailer.createTransport({
+    host: 'smtp.example.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+```
 
 ---
 
 ## 🎓 Educational Value
 
 This project demonstrates:
-- ✅ **API Integration** - Fetching and displaying external data
-- ✅ **Async JavaScript** - Promises, async/await patterns
+- ✅ **Full-Stack Development** - Frontend + Backend integration
+- ✅ **RESTful API** - POST endpoint with JSON responses
+- ✅ **Form Validation** - Client-side and server-side validation
+- ✅ **Email Integration** - SMTP with Nodemailer
+- ✅ **Environment Variables** - Secure credential management
 - ✅ **DOM Manipulation** - Dynamic content generation
-- ✅ **CSS Grid & Flexbox** - Modern layout techniques
+- ✅ **CSS Animations** - Keyframe animations and transitions
 - ✅ **Responsive Design** - Mobile-first approach
-- ✅ **Animation** - CSS keyframes and transitions
-- ✅ **Error Handling** - Try-catch blocks for API failures
-- ✅ **Clean Code** - Readable, maintainable structure
+- ✅ **Error Handling** - User-friendly error messages
+- ✅ **ES6+ JavaScript** - Modern syntax and patterns
 
 ---
 
-## 🔮 Future Enhancements
+## 🐛 Troubleshooting
 
-- [ ] Add more celestial objects (moons, asteroids, comets)
+### Server won't start
+- **Check Node.js version:** `node --version` (should be v14+)
+- **Reinstall dependencies:** `rm -rf node_modules && npm install`
+- **Check port availability:** Change `PORT` in `.env` if 3000 is in use
+
+### Email not sending
+- **Verify credentials:** Check `.env` file has correct email/password
+- **Gmail users:** Must use App Password, not regular password
+- **Check console:** Look for error messages in terminal
+- **Test connection:** Server logs "Server is ready to send emails" on successful config
+
+### Images not loading
+- **Check file paths:** All images should be in `static/images/`
+- **Verify filenames:** Match exactly (case-sensitive)
+- **Browser console:** Check for 404 errors
+
+### Contact form not working
+- **Server running:** Ensure `npm start` is active
+- **Check URL:** Form submits to `http://localhost:3000/api/contact`
+- **CORS issues:** Server has CORS enabled for all origins
+- **Browser console:** Look for JavaScript errors
+
+---
+
+## 🔒 Security Notes
+
+- **Never commit `.env` file** - Already in `.gitignore`
+- **Use environment variables** - For all sensitive data
+- **App Passwords** - More secure than regular passwords
+- **Input validation** - Both client and server-side
+- **No SQL injection risk** - No database used
+- **HTTPS recommended** - For production deployment
+
+---
+
+## 🚀 Deployment
+
+### Deploying to Production
+
+1. **Choose a hosting platform:**
+   - Heroku
+   - Vercel
+   - Railway
+   - DigitalOcean
+   - AWS
+
+2. **Set environment variables** on hosting platform
+
+3. **Update email credentials** for production
+
+4. **Consider using transactional email service:**
+   - SendGrid
+   - Mailgun
+   - AWS SES
+   - More reliable than Gmail for production
+
+---
+
+## 📝 Future Enhancements
+
+Potential features to add:
+- [ ] Database integration for storing messages
+- [ ] Admin panel to view submissions
+- [ ] More galaxies and planets
 - [ ] Search functionality
-- [ ] Filter by object type
-- [ ] Dark/light theme toggle
-- [ ] Share buttons for social media
-- [ ] Favorite/bookmark system (localStorage)
-- [ ] Comparison tool (side-by-side planets)
-- [ ] Quiz/trivia section
-
----
-
-## 📝 Code Quality
-
-- **HTML:** Semantic, accessible markup
-- **CSS:** BEM-inspired naming, CSS variables for theming
-- **JavaScript:** ES6+, modular functions, error handling
-- **Comments:** Clear inline documentation
-- **Performance:** Optimized animations, minimal repaints
-
----
-
-## 🐛 Known Issues
-
-- None currently! Report issues via team members.
+- [ ] Dark/Light mode toggle
+- [ ] Language translations
+- [ ] Social media sharing
+- [ ] Quiz or interactive learning section
 
 ---
 
 ## 📄 License
 
-This project is created for educational purposes as part of ICT Project 25K.
+ISC License - Free to use and modify for educational purposes.
 
 ---
 
-## 🙏 Credits & Acknowledgments
+## 🙏 Acknowledgments
 
-- **Images:** [NASA Images and Video Library](https://images.nasa.gov/)
-- **Design Inspiration:** Modern space-themed UIs
-- **Fonts:** System fonts for fast loading
-- **Icons:** Unicode emoji for lightweight graphics
+- Team members for their contributions (even while on vacation or gambling 😄)
+- Space images are for educational purposes
+- Built with ❤️ for ICT Project BAI-1C
 
 ---
 
 ## 📞 Contact
 
-For questions or feedback, contact any team member:
-- Sarim Raza
-- Taher Mustansir
-- Baray Bhai
+For questions or suggestions, use the contact form on the website or reach out to the team members.
 
----
-
-## 🎉 Project Stats
-
-- **Lines of Code:** ~750 total (HTML + CSS + JS)
-- **Files:** 4 (3 HTML + 1 CSS)
-- **Development Time:** [Add your timeframe]
-- **Technologies:** 3 (HTML5, CSS3, JavaScript ES6+)
-
----
-
-**© 2024 Astropedia | ICT Project BATCH 25K - BAI-1C**
-
-*"Explore the universe, one click at a time"* 🌠
+**Happy Space Exploring! 🚀🌟**
