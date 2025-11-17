@@ -73,7 +73,7 @@ app.post('/submit-feedback', async (req, res) => {
     try {
         // Send email using Resend API
         const { data, error } = await resend.emails.send({
-            from: `Astropedia <onboarding@resend.dev>`, // Use Resend's test domain or your verified domain
+            from: process.env.FROM_EMAIL || 'Astropedia <onboarding@resend.dev>',
             to: [email],
             subject: 'Welcome to Astropedia - Thank You for Your Feedback! 🌌',
             html: `
