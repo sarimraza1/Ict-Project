@@ -80,24 +80,90 @@ app.post('/api/contact', async (req, res) => {
     try {
         // Email content
         const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER, // Send to yourself
-            subject: `New Astropedia Suggestion from ${email}`,
+            from: `"Astropedia Team" <${process.env.EMAIL_TEAM}>`,
+            to: email,
+            subject: 'Welcome to Astropedia - Thank You for Your Feedback! 🌌',
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #6366f1;">New Contact Form Submission</h2>
-                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                        <p><strong>From:</strong> ${email}</p>
-                        <p><strong>Suggestion:</strong></p>
-                        <p style="background-color: white; padding: 15px; border-radius: 4px; border-left: 4px solid #6366f1;">
-                            ${suggestion}
-                        </p>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .header {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            padding: 30px;
+                            text-align: center;
+                            border-radius: 10px 10px 0 0;
+                        }
+                        .content {
+                            background: #f9f9f9;
+                            padding: 30px;
+                            border-radius: 0 0 10px 10px;
+                        }
+                        .greeting {
+                            font-size: 24px;
+                            margin-bottom: 20px;
+                        }
+                        .message {
+                            background: white;
+                            padding: 20px;
+                            border-left: 4px solid #667eea;
+                            margin: 20px 0;
+                            border-radius: 5px;
+                        }
+                        .footer {
+                            text-align: center;
+                            margin-top: 30px;
+                            color: #666;
+                            font-size: 14px;
+                        }
+                        .emoji {
+                            font-size: 48px;
+                            margin: 20px 0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="emoji">🌌✨🚀</div>
+                        <h1>Welcome to Astropedia!</h1>
                     </div>
-                    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
-                    <p style="color: #6b7280; font-size: 14px;">
-                        This message was sent from the Astropedia contact form.
-                    </p>
-                </div>
+                    <div class="content">
+                        <p class="greeting">Dear Space Explorer,</p>
+                        
+                        <p>Thank you for reaching out to us! We're thrilled to have you as part of the Astropedia community.</p>
+                        
+                        <div class="message">
+                            <strong>Your suggestion:</strong>
+                            <p>${suggestion}</p>
+                        </div>
+                        
+                        <p>We truly appreciate you taking the time to share your thoughts with us. Your feedback helps us improve and create a better experience for all space enthusiasts.</p>
+                        
+                        <p>Our team will carefully review your suggestion and consider it as we continue to expand our cosmic database. We're committed to making Astropedia the best resource for exploring the wonders of the universe!</p>
+                        
+                        <p>Feel free to reach out anytime you have more ideas, questions, or just want to share your passion for astronomy.</p>
+                        
+                        <p><strong>Keep exploring the cosmos!</strong> 🌟</p>
+                        
+                        <p>Best regards,<br>
+                        <strong>The Astropedia Team</strong><br>
+                        ICT Project - BAI-1C</p>
+                    </div>
+                    <div class="footer">
+                        <p>This is an automated message from Astropedia</p>
+                        <p>&copy; 2025 Astropedia | Exploring the Universe Together</p>
+                    </div>
+                </body>
+                </html>
             `
         };
 
@@ -105,16 +171,16 @@ app.post('/api/contact', async (req, res) => {
         await transporter.sendMail(mailOptions);
 
         // Send success response
-        res.status(200).json({
+        res.json({
             success: true,
-            message: 'Email sent successfully!'
+            message: 'Thank you! Your message has been received and a confirmation email has been sent.'
         });
 
     } catch (error) {
         console.error('Error sending email:', error);
         res.status(500).json({
             success: false,
-            message: 'Failed to send email. Please try again later.'
+            message: 'There was an error processing your request. Please try again later.'
         });
     }
 });
