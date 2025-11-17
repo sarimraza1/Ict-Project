@@ -50,7 +50,7 @@ app.get('/contact', (req, res) => {
 });
 
 // API endpoint to handle contact form submission
-app.post('/api/contact', async (req, res) => {
+app.post('/submit-feedback', async (req, res) => {
     const { email, suggestion } = req.body;
 
     // Validate email
