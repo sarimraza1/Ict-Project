@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const team = process.env.EMAIL_TEAM;
 
 // Middleware
 app.use(cors());
@@ -72,7 +73,7 @@ app.post('/submit-feedback', async (req, res) => {
     try {
         // Send email using Resend API
         const { data, error } = await resend.emails.send({
-            from: 'Astropedia <onboarding@resend.dev>', // Use Resend's test domain or your verified domain
+            from: `Astropedia <onboarding@resend.dev>`, // Use Resend's test domain or your verified domain
             to: [email],
             subject: 'Welcome to Astropedia - Thank You for Your Feedback! 🌌',
             html: `
@@ -148,6 +149,7 @@ app.post('/submit-feedback', async (req, res) => {
                         
                         <p>Best regards,<br>
                         <strong>The Astropedia Team</strong><br>
+                        ${team}<br>
                         ICT Project - BAI-1C</p>
                     </div>
                     <div class="footer">
