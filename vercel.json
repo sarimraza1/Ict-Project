@@ -8,8 +8,18 @@
     ],
     "routes": [
         {
-            "src": "/api/(.*)",
-            "dest": "server.js"
+            "src": "/api/contact",
+            "dest": "/server.js",
+            "methods": [
+                "POST"
+            ]
+        },
+        {
+            "src": "/api/health",
+            "dest": "/server.js",
+            "methods": [
+                "GET"
+            ]
         },
         {
             "src": "/static/(.*)",
@@ -20,24 +30,12 @@
             "dest": "/static/images/$1"
         },
         {
-            "src": "/(.*\\.css)",
+            "src": "/(.*\\.css|.*\\.js)",
             "dest": "/static/$1"
         },
         {
-            "src": "/(.*\\.js)",
-            "dest": "/static/$1"
-        },
-        {
-            "src": "/planets.html",
-            "dest": "/static/planets.html"
-        },
-        {
-            "src": "/galaxies.html",
-            "dest": "/static/galaxies.html"
-        },
-        {
-            "src": "/contact.html",
-            "dest": "/static/contact.html"
+            "src": "/(planets|galaxies|contact)\\.html",
+            "dest": "/static/$1.html"
         },
         {
             "src": "/",
